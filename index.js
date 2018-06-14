@@ -28,10 +28,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
+const FAKE_DB_URL = 'mongodb://localhost:27017/test'
 /* start database connection */
-mongoose.connect(process.env.DB_URL, { 
+mongoose.connect(/*process.env.DB_URL*/ FAKE_DB_URL, {
   useMongoClient: true,
-  promiseLibrary: require('bluebird') 
+  promiseLibrary: require('bluebird')
 });
 
 /* route endpoints */

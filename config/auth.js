@@ -10,6 +10,8 @@ const jwt = require('jsonwebtoken'),
 
 const User = require('../database/user');
 
+const FAKE_JWT_SECRET = 'test'
+
 module.exports = {
   /***************************************************************************
    * verifyJWT: middleware for verifying the token
@@ -21,7 +23,7 @@ module.exports = {
     let token = req.headers.authorization.substr('Bearer '.length);
     token = token || req.body.token || req.query.token;
     if (token) {
-      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      jwt.verify(token, /*process.env.JWT_SECRET*/ FAKE_JWT_SECRET, (err, decoded) => {
         if (err) {
           handler(false, 'Failed to authenticate token.', 503)(req, res);
         } else {
@@ -39,7 +41,7 @@ module.exports = {
     } else {
       handler(false, 'No token provided.', 403)(req, res);
     }
-  }, 
+  },
 
   /***************************************************************************
    * signJWT: helper function for creating the token
@@ -55,8 +57,8 @@ module.exports = {
       user_id: user_id,
       admin: admin,
       exp: parseInt(exp.getTime() / 1000),
-    }, process.env.JWT_SECRET);
-  }, 
+    }, /*process.env.JWT_SECRET*/ FAKE_JWT_SECRET);
+  },
 
   /***************************************************************************
    * authenticate: authenticate user with email and password
