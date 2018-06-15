@@ -18,6 +18,7 @@ const sendRequests = (users, request, req, res, callback) => {
       });
       async.parallel(tasks, (err, results) => {
         if (err) {
+          console.log(err);
           handler(false, 'Failed to send requests.', 503)(req, res);
         } else {
           callback();
@@ -67,8 +68,8 @@ const sendNotifications = (users, notification, req, res, callback) => {
   });
 }
 
-/* removes the request from users, removes the request, saves the notification, 
- * and sends the notification to the request author. request.author must be 
+/* removes the request from users, removes the request, saves the notification,
+ * and sends the notification to the request author. request.author must be
  * populated. */
 const replyRequest = (users, request, notification, req, res, callback) => {
   const requestAuthor = request.author; // must be populated
