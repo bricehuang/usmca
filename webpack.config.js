@@ -5,14 +5,14 @@ const webpack = require('webpack'),
 
 module.exports = {
   entry: {
-    index: path.resolve(SRC_DIR, 'index.tsx')
+    index: path.resolve(SRC_DIR, 'index.js')
   },
   output: {
     path: BUILD_DIR,
     filename: '[name].bundle.js'
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx', 'json']
+    extensions: ['.js', '.jsx', 'json']
   },
   module: {
     loaders: [
@@ -20,11 +20,6 @@ module.exports = {
         test: /\.jsx?/,
         include: SRC_DIR,
         loader: 'babel-loader'
-      },
-      {
-        test: /\.tsx?/,
-        include: SRC_DIR,
-        loader: 'awesome-typescript-loader'
       }
     ]
   }

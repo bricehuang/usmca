@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import * as $ from 'jquery';
+import $ from 'jquery';
 
 import { requestPayloads, requestStatuses } from './types';
 import { requestTypes } from '../../constants';
@@ -15,7 +15,7 @@ const {
 } = requestPayloads;
 
 export function authenticate(action, dispatch, callback) {
-  const userId = auth.userId(); 
+  const userId = auth.userId();
   if (!userId) {
     dispatch(Object.assign(action, errorPayload('User is not logged in.')));
   } else callback(userId);
@@ -38,7 +38,7 @@ export function APIAction({ type, url, opts, formatData }) {
         else dispatch(Object.assign(action, successPayload({ content })));
       }),
       serverError(action, dispatch)
-    ); 
+    );
   }
 }
 
@@ -54,7 +54,7 @@ export function authAPIAction({ type, url, opts, formatData, noPending }) {
           else dispatch(Object.assign(action, successPayload({ content })));
         }),
         serverError(action, dispatch)
-      ); 
+      );
     });
   }
 }

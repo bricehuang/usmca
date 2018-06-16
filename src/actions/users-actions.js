@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import * as $ from 'jquery'; 
+import $ from 'jquery';
 import auth from '../auth';
 import { memberCompetitions } from './competitions-actions';
 import {
@@ -33,7 +33,7 @@ export function userInfo() {
   return dispatch => {
     authenticate(action, dispatch, userId => {
       dispatch(Object.assign(action, pendingPayload()));
-      fetch('/api/users', { 
+      fetch('/api/users', {
         method: 'get',
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       }).then(
@@ -83,7 +83,7 @@ const requestURLs = {
 export function respondRequest(request, response, type) {
   let action = { type };
   return dispatch => {
-    if (response !== requestTypes.ACCEPT && 
+    if (response !== requestTypes.ACCEPT &&
         response !== requestTypes.REJECT ) {
       dispatch(Object.assign(action, errorPayload('Invalid response to request.')));
     } else {
@@ -91,7 +91,7 @@ export function respondRequest(request, response, type) {
       fetch(requestURLs[type], {
         method: 'post',
         body: JSON.stringify({ request_id: request._id, type: response }),
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -126,7 +126,7 @@ export function userPut(query) {
           else dispatch(Object.assign(action, successPayload({ content: user })));
         }),
         serverError(action, dispatch)
-      ); 
+      );
     });
   }
 }

@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch';
-import * as $ from 'jquery';
+import $ from 'jquery';
 
-import { 
+import {
   requestPayloads,
   COMP_REQ,
   COMP_RES,
@@ -36,12 +36,12 @@ export function requestCompetition({ name, shortName, website }) {
       dispatch(Object.assign(action, pendingPayload()));
       fetch('/api/competitions', {
         method: 'post',
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           type: requestTypes.REQUEST,
           action_type: COMP_REQ,
           competition: { name, shortName, website }
         }),
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -66,14 +66,14 @@ export function memberCompetitions(options = { info: false }) {
       const url = `/api/users/competitions?${$.param({info})}`;
       fetch(url, {
         method: 'get',
-        headers: { 
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       }).then(
         res => res.json().then(({ success, message, competitions }) => {
           if (!success) dispatch(Object.assign(action, errorPayload(message)));
-          else dispatch(Object.assign(action, successPayload({ 
-            content: competitions 
+          else dispatch(Object.assign(action, successPayload({
+            content: competitions
           })));
         }),
         serverError(action, dispatch)
@@ -90,8 +90,8 @@ export function allCompetitions() {
     .then(
       res => res.json().then(({ success, message, competitions }) => {
         if (!success) dispatch(Object.assign(action, errorPayload(message)));
-        else dispatch(Object.assign(action, successPayload({ 
-          content: competitions 
+        else dispatch(Object.assign(action, successPayload({
+          content: competitions
         })));
       }),
       serverError(action, dispatch)
@@ -106,14 +106,14 @@ export function directorCompetitions() {
       dispatch(Object.assign(action, pendingPayload()));
       fetch('/api/users/director', {
         method: 'get',
-        headers: { 
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       }).then(
         res => res.json().then(({ success, message, competitions }) => {
           if (!success) dispatch(Object.assign(action, errorPayload(message)));
-          else dispatch(Object.assign(action, successPayload({ 
-            content: competitions 
+          else dispatch(Object.assign(action, successPayload({
+            content: competitions
           })));
         }),
         serverError(action, dispatch)
@@ -129,12 +129,12 @@ export function joinCompetition(competition_id) {
       dispatch(Object.assign(action, pendingPayload()));
       fetch('/api/competitions/join', {
         method: 'post',
-        body: JSON.stringify({ 
-          type: requestTypes.REQUEST, 
-          action_type: COMP_REQ_JOIN, 
-          competition_id 
+        body: JSON.stringify({
+          type: requestTypes.REQUEST,
+          action_type: COMP_REQ_JOIN,
+          competition_id
         }),
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -145,7 +145,7 @@ export function joinCompetition(competition_id) {
         }),
         serverError(action, dispatch)
       );
-    });    
+    });
   }
 }
 
@@ -155,9 +155,9 @@ export function inviteUser({ competition_id, user_id }) {
     url: '/api/competitions/invite',
     opts: {
       method: 'post',
-      body: JSON.stringify({ 
-        type: requestTypes.REQUEST, 
-        action_type: COMP_INV_JOIN, 
+      body: JSON.stringify({
+        type: requestTypes.REQUEST,
+        action_type: COMP_INV_JOIN,
         competition_id,
         user_id
       }),

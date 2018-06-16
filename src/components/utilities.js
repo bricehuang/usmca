@@ -4,7 +4,7 @@ import { Row, Col, Modal, Button } from "react-materialize";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import * as $ from "jquery";
+import $ from "jquery";
 import Clipboard from "clipboard";
 
 import CommentForm from "./forms/comment";
