@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Row, Col, Modal, Button } from "react-materialize";
 import { connect } from "react-redux";
@@ -439,6 +439,10 @@ class HorizontalNav extends React.Component {
 
     const activeProp = (this.props.childProps || {})[active],
           headerProps = (this.props.headerProps || {});
+    console.log(this.props);
+    console.log(this.props.childProps);
+    console.log(activeProp);
+    console.log(tabs[active].view(activeProp));
     return (
       <div>
         <Col s={12} className="horizontal-nav">
@@ -458,7 +462,7 @@ class HorizontalNav extends React.Component {
           }
         </Col>
         <Col s={12}>
-          <div>{ tabs[active].view(activeProp) }</div>
+          <div>{ activeProp ? tabs[active].view(activeProp) : tabs[active].view() }</div>
         </Col>
       </div>
     );

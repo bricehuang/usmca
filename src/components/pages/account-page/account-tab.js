@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col, Input, Modal, Button } from "react-materialize";
@@ -26,7 +26,7 @@ class AccountTab extends React.Component {
               </form>
             </Row>
           </Modal>
-          </h2>
+        </h2>
         <ul>
           <li>Name: {name}</li>
           <li>Email: {email}</li>

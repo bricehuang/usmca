@@ -45,7 +45,7 @@ const AccountPage = ({ match }) => {
       view: () => <h1>Admin</h1>
     }
   }
- 
+
   let active = match.params.tab || "notifications";
   if (!(_.find(_.keys(accountTabs), tab => tab === active))) {
     active = "notifications";
