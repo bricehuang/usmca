@@ -3,20 +3,20 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import _ from "lodash";
 
-import { 
-  VerticalNav, 
-  Counter, 
-  LoadMore, 
+import {
+  VerticalNav,
+  Counter,
+  LoadMore,
   Notification,
   Request
-} from "../../utilities";
-import { requestEnum } from "../../../../constants";
-import { userInfo, userPut } from "../../../actions";
+} from "../utilities";
+import { requestEnum } from "../../../constants";
+import { userInfo, userPut } from "../../actions";
 
 const { REQUEST, INVITE } = requestEnum;
 
-class NotificationsTab extends React.Component {
-  requestCounter = (userData, requestType) => { 
+class NotificationsPage extends React.Component {
+  requestCounter = (userData, requestType) => {
     if (!userData) return <div />;
     const data = userData.content;
     if (!data) return <div />;
@@ -54,7 +54,7 @@ class NotificationsTab extends React.Component {
       <div className="notifications-container">
         <ul className="notifications-list">
           {
-            (requests.length === 0) ? noRequestView : 
+            (requests.length === 0) ? noRequestView :
             <div>
               {
                 requests.map((request, key) => <Request request={request} key={key} />)
@@ -80,7 +80,7 @@ class NotificationsTab extends React.Component {
     }
     return <Counter count={ notifications.length } />;
   }
-    
+
   notificationList = ({ userData, markRead, markUrgent, markUnread }, type) => {
     if (!userData) return <div />;
     const data = userData.content;
@@ -94,7 +94,7 @@ class NotificationsTab extends React.Component {
     unread = styleNotifs(unread, "new-announcement", markRead);
     read = styleNotifs(read, "", markUrgent);
     urgent = styleNotifs(urgent, "urgent-announcement", markUnread);
-    /* combine and sort unread, read, and urgent */ 
+    /* combine and sort unread, read, and urgent */
     const all = _.concat(unread, read, urgent),
           notificationOptions = { unread, read, urgent, all };
     let notifications= _.sortBy(notificationOptions[type], "created");
@@ -103,26 +103,26 @@ class NotificationsTab extends React.Component {
       <div className="notifications-container">
         <ul className="notifications-list">
           {
-            (notifications.length == 0) ? 
-            <li className="transparent">No notifications found.</li> : 
+            (notifications.length == 0) ?
+            <li className="transparent">No notifications found.</li> :
             <div>
               {
                 notifications.map((notification, key) => {
-                  const { 
-                    admin_author, 
-                    title, 
-                    body, 
-                    author, 
-                    label, 
+                  const {
+                    admin_author,
+                    title,
+                    body,
+                    author,
+                    label,
                     handleClick,
                     _id
                   } = notification;
                   return (
-                    <Notification 
-                      className={label} 
-                      author={admin_author ? 'Admin' : author ? (author.short_name || 'N/A') : 'N/A' } 
-                      title={title} 
-                      message={body} 
+                    <Notification
+                      className={label}
+                      author={admin_author ? 'Admin' : author ? (author.short_name || 'N/A') : 'N/A' }
+                      title={title}
+                      message={body}
                       key={key}
                       onClick={ () => handleClick(notification._id) } />
                   );
@@ -136,7 +136,7 @@ class NotificationsTab extends React.Component {
     );
   }
 
-  notificationsTabs = () => { 
+  notificationsTabs = () => {
     return ({
       "all": {
         title: () => "All",
@@ -190,8 +190,8 @@ class NotificationsTab extends React.Component {
 
     return (
       <div style={{marginTop: "36px"}}>
-        <VerticalNav 
-          tabs={ this.notificationsTabsViews } 
+        <VerticalNav
+          tabs={ this.notificationsTabsViews }
           active="all"
           childProps={ childProps }
           headerProps={ headerProps } />
@@ -205,24 +205,24 @@ const mapStateToProps = state => ({
       }),
       mapDispatchToProps = dispatch => ({
         userInfo: () => { userInfo()(dispatch); },
-        markRead: notif => { 
-          userPut({ 
-            $pull: { unread: notif, urgent: notif }, 
-            $push: { read: notif } 
+        markRead: notif => {
+          userPut({
+            $pull: { unread: notif, urgent: notif },
+            $push: { read: notif }
           })(dispatch);
         },
-        markUnread: notif => { 
-          userPut({ 
-            $pull: { urgent: notif, read: notif }, 
-            $push: { unread: notif } 
+        markUnread: notif => {
+          userPut({
+            $pull: { urgent: notif, read: notif },
+            $push: { unread: notif }
           })(dispatch);
         },
         markUrgent: notif => {
-          userPut({ 
-            $pull: { read: notif, unread: notif }, 
-            $push: { urgent: notif } 
+          userPut({
+            $pull: { read: notif, unread: notif },
+            $push: { urgent: notif }
           })(dispatch);
         }
       });
 
-export default connect(mapStateToProps, mapDispatchToProps)(NotificationsTab);
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationsPage);

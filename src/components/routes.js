@@ -13,9 +13,8 @@ const Routes = ({ authenticated }) => (
     <Route path="/home/:tab" component={ authenticated ? Pages.AccountPage : Pages.IndexPage } />
     <Route exact path="/login" component={ Pages.LoginPage }/>
     <Route exact path="/propose" component={ requireAuth(Pages.Propose) }/>
-    <Route exact path="/test-solve" component={ requireAuth(Pages.TestSolvePage) }/>
-    <Route exact path="/public-database" component={ requireAuth(Pages.PublicDatabasePage) }/>
     <Route exact path="/account" component={ requireAuth(Pages.AccountInfoPage) }/>
+    <Route exact path="/notifications" component={ requireAuth(Pages.NotificationsPage) }/>
     <Route exact path="/about" component={ Pages.About }/>;
     <Route path="/view-contest/:id" component={ requireAuth(Pages.ViewContestPage) }/>
     <Route path="/view-database/:id" component={ requireAuth(Pages.ViewDatabasePage) }/>

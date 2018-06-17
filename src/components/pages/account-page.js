@@ -3,7 +3,6 @@ import { Row } from "react-materialize";
 import { Link } from "react-router-dom";
 import _ from "lodash";
 
-import NotificationsTab from "./account-page/notifications-tab";
 import CompetitionsTab from "./account-page/competitions-tab";
 import ProblemsTab from "./account-page/problems-tab";
 import { HorizontalNav } from "../utilities";
@@ -15,11 +14,6 @@ const Title = ({ fa, title}) => (
 
 const AccountPage = ({ match }) => {
   let accountTabs = {
-    "notifications": {
-      title: () => <Title fa="bell" title="Notifications"/>,
-      to: "/home/notifications",
-      view: () => <NotificationsTab />
-    },
     "competitions": {
       title: () => <Title fa="trophy" title="Competitions"/>,
       to: "/home/competitions",
@@ -40,9 +34,9 @@ const AccountPage = ({ match }) => {
     }
   }
 
-  let active = match.params.tab || "notifications";
+  let active = match.params.tab || "competitions";
   if (!(_.find(_.keys(accountTabs), tab => tab === active))) {
-    active = "notifications";
+    active = "competitions";
   }
 
   return (
