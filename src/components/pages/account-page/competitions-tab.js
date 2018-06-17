@@ -18,9 +18,9 @@ const PermissionsModal = ({ defaultValue, competition_id, user_id }) => (
   <Modal
     header="Change Permissions"
     trigger={<a className="teal-text text-darken-3 underline-hover">change permissions</a>}>
-    <Forms.ChangePermissions 
-      defaultValue={ defaultValue } 
-      competition_id={ competition_id } 
+    <Forms.ChangePermissions
+      defaultValue={ defaultValue }
+      competition_id={ competition_id }
       user_id = { user_id } />
   </Modal>
 );
@@ -156,7 +156,7 @@ class CompetitionsTab extends React.Component {
       "contests": {
         title: () => "Contests",
         view: () => <div className="round-container">
-          { membership === DIRECTOR && 
+          { membership === DIRECTOR &&
             <Modal header="Create Contest" trigger={ <Button className="teal darken-3" waves="light">Create contest</Button> }>
               <CreateContestForm competition_id={ competition._id } />
             </Modal>
