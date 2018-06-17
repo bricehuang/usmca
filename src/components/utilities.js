@@ -439,10 +439,6 @@ class HorizontalNav extends React.Component {
 
     const activeProp = (this.props.childProps || {})[active],
           headerProps = (this.props.headerProps || {});
-    console.log(this.props);
-    console.log(this.props.childProps);
-    console.log(activeProp);
-    console.log(tabs[active].view(activeProp));
     return (
       <div>
         <Col s={12} className="horizontal-nav">

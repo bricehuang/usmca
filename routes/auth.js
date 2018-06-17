@@ -8,7 +8,7 @@ router.post('/signup', (req, res) => {
   const { name, email, password, university } = req.body;
   if (!name || !email || !password || !university) {
     handler(false, 'Please fill out all fields.', 400)(req, res);
-  } else { 
+  } else {
     User.findOne({ email }, (err, user) => {
       if (err) {
         handler(false, 'Database failed to find email.', 503)(req, res);
@@ -48,7 +48,7 @@ router.post('/login', (req, res) => {
           if (err) {
             handler(false, 'Database failed to authenticate.', 503)(req, res);
           } else {
-            return result.authenticated ? 
+            return result.authenticated ?
               handler(true, 'User authenticated.', 200, {
                 token: auth.signJWT(user.email, user._id, user.admin)
               })(req, res) :
@@ -62,25 +62,47 @@ router.post('/login', (req, res) => {
 
 router.post('/password', auth.verifyJWT, (req, res) => {
   const { currPass, newPass } = req.body;
-  console.log(currPass, newPass);
   req.user.checkPassword(currPass, (err, result) => {
     if (err) {
       handler(false, 'Database failed to authenticate.', 503)(req, res);
     } else if (result.authenticated) {
       req.user.password = newPass;
       req.user.save(err => {
-        if (err) 
+        if (err)
           handler(false, 'Database failed to save new password.', 503)(req, res);
         else {
           handler(true, 'Successfully updated password.', 200, {
             token: auth.signJWT(req.user.email, req.user._id, req.user.admin)
           })(req, res);
         }
-      }); 
+      });
     } else {
       handler(false, 'Failed to authenticate user.', 401)(req, res);
     }
   });
 });
+
+router.post('/edit-account', auth.verifyJWT, (req, res) => {
+  const { name, university } = req.body;
+  console.log( name, university );
+  if (!name || !university) {
+    handler(false, 'Please fill out all fields.', 400)(req, res);
+  } else if (!req.user) {
+    handler(false, 'User does not exist.', 400)(req, res);
+  } else {
+      req.user.name = name;
+      req.user.university = university;
+      req.user.save(err => {
+        if (err)
+          handler(false, 'Database failed to save new account info.', 503)(req, res);
+        else {
+          handler(true, 'Successfully updated account info.', 200, {
+            token: auth.signJWT(req.user.email, req.user._id, req.user.admin)
+          })(req, res);
+        }
+      });
+  }
+});
+
 
 module.exports = router;

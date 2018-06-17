@@ -6,7 +6,6 @@ import _ from "lodash";
 import NotificationsTab from "./account-page/notifications-tab";
 import CompetitionsTab from "./account-page/competitions-tab";
 import ProblemsTab from "./account-page/problems-tab";
-import AccountTab from "./account-page/account-tab";
 import { HorizontalNav } from "../utilities";
 import auth from "../../auth";
 
@@ -31,11 +30,6 @@ const AccountPage = ({ match }) => {
       to: "/home/problems",
       view: () => <ProblemsTab />
     },
-    "account": {
-      title: () => <Title fa="user" title="Account" />,
-      to: "/home/account",
-      view: () => <AccountTab />
-    }
   };
 
   if (auth.isAdmin()) {

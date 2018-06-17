@@ -5,6 +5,7 @@ import { Row, Col, Input, Modal, Button } from "react-materialize";
 
 import { RightButtonPanel } from "../utilities";
 import ChangePasswordForm from "../forms/change-password";
+import EditAccountForm from "../forms/edit-account";
 
 class AccountInfoPage extends React.Component {
   render() {
@@ -16,16 +17,7 @@ class AccountInfoPage extends React.Component {
         <Col s={12}>
           <h2 className="teal-text text-darken-4" style={{marginTop: "36px"}}>Account
             <Modal header="Edit Account" trigger={<a className="teal-text text-darken-4 right"><i className="fa fa-pencil" aria-hidden="true"></i></a>}>
-              <Row>
-                <form className="s12">
-                  <Input s={12} label="Name" defaultValue={name} />
-                  <Input s={12} label="Email" defaultValue={email} />
-                  <Input s={12} label="University" defaultValue={university} />
-                  <RightButtonPanel>
-                    <Button className="teal darken-3" waves="light">Save</Button>
-                  </RightButtonPanel>
-                </form>
-              </Row>
+              <EditAccountForm />
             </Modal>
             </h2>
           <ul>

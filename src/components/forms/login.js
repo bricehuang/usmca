@@ -35,9 +35,9 @@ class LoginForm extends React.Component {
   };
 
   render() {
-    const { 
-      handleSubmit, 
-      authenticated: { content, message, requestStatus } 
+    const {
+      handleSubmit,
+      authenticated: { content, message, requestStatus }
     } = this.props;
     return (
       <form onSubmit={ handleSubmit(this.onSubmit) }>

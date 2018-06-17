@@ -1,15 +1,16 @@
 import fetch from 'isomorphic-fetch';
 
 import { userInfo } from './users-actions';
-import { 
-  AUTH_USER,  
-  UNAUTH_USER, 
-  CHANGE_PASS, 
+import {
+  AUTH_USER,
+  UNAUTH_USER,
+  CHANGE_PASS,
+  EDIT_ACCOUNT,
   requestPayloads
 } from './types';
 
-const { 
-  errorPayload, 
+const {
+  errorPayload,
   pendingPayload,
   idlePayload,
   successPayload
@@ -17,12 +18,12 @@ const {
 
 export function logoutUser(dispatch) {
   localStorage.removeItem('token');
-  dispatch({ 
-    type: UNAUTH_USER, 
-      payload: { 
-      content: null, 
-      requestStatus: SUCCESS 
-    } 
+  dispatch({
+    type: UNAUTH_USER,
+      payload: {
+      content: null,
+      requestStatus: SUCCESS
+    }
   });
 }
 
@@ -79,6 +80,27 @@ export function changePass({ currPass, newPass }) {
     fetch('/password', {
       method: 'post',
       body: JSON.stringify({ currPass, newPass }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    .then(
+      handleAuth(action, dispatch), ({ message }) => {
+        dispatch(Object.assign(action, errorPayload(
+          message || 'Failed to communicate with server.'
+        )));
+      }
+    );
+  }
+}
+
+export function editAccount({ name, university }) {
+  let action = { type: EDIT_ACCOUNT };
+  return dispatch => {
+    fetch('/edit-account', {
+      method: 'post',
+      body: JSON.stringify({ name, university }),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`

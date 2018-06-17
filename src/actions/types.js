@@ -44,7 +44,8 @@ export const requestPayloads = {
 /* authorization */
 export const AUTH_USER = 'auth_user', // set user to be authenticated
              UNAUTH_USER = 'unauth_user', // set user to be unauthenticated
-             CHANGE_PASS = 'change_pass'; // change user password
+             CHANGE_PASS = 'change_pass', // change user password
+             EDIT_ACCOUNT = 'edit_account'; // edit account info
 
 /* authorization */
 export const USER_INFO = 'user_info', // get user info
