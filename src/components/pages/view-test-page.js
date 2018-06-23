@@ -14,7 +14,7 @@ import AddProblemForm from "../forms/add-problem";
 const { SUCCESS, PENDING, ERROR, IDLE } = requestStatuses;
 
 function removeProblem(key, removeElem) {
-  $('#problem' + key).fadeOut(300, function(){ 
+  $('#problem' + key).fadeOut(300, function(){
     removeElem(key);
     $(this).remove();
   });
@@ -119,7 +119,7 @@ class ViewTestPage extends React.Component {
   }
 
   render() {
-    const { 
+    const {
             testData: { content, requestStatus, message },
             removeTestProb,
             reorderTestProbs
@@ -129,10 +129,14 @@ class ViewTestPage extends React.Component {
       <div>
         { test && (
             <Row className="container">
-              <h2 className="teal-text text-darken-4"><Link to={ `/view-contest/${test.contest._id}` } className="teal-text text-darken-3 underline-hover">{ test.contest.name }</Link></h2>
-              <h3 className="teal-text text-darken-4">{ test.name }</h3>
-              <p>The target for this test is { test.num_problems } problems.</p>
-              <TestProblems test={ test } removeTestProb={ removeTestProb } reorderTestProbs={ reorderTestProbs } />
+              <Col s={12}>
+                <div style={{marginTop: "36px"}}>
+                  <Link to={ `/view-contest/${test.contest._id}` } className="waves-effect waves-light btn teal darken-3">Return to { test.contest.name }</Link>
+                  <h3 className="teal-text text-darken-4">{ test.name }</h3>
+                  <p>The target for this test is { test.num_problems } problems.</p>
+                  <TestProblems test={ test } removeTestProb={ removeTestProb } reorderTestProbs={ reorderTestProbs } />
+                </div>
+              </Col>
             </Row>
           )
         }
@@ -148,7 +152,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   getTest: id => { getTest(id)(dispatch); },
-  removeTestProb: (test_id, problem_id) => { 
+  removeTestProb: (test_id, problem_id) => {
     removeTestProb(test_id, problem_id)(dispatch);
   },
   reorderTestProbs: (test_id, problem_ids) => {

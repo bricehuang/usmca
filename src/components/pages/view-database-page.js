@@ -58,9 +58,12 @@ class DatabasePage extends React.Component {
     return (
       <Row className="container">
         <Col s={12}>
-          <Title />
-          <QueryDBForm competition_id={ match.params.id } />
-          <Results />
+          <div style={{marginTop: "36px"}}>
+            <Title />
+            <Link to={ `/view-competition/${match.params.id}` } className="waves-effect waves-light btn teal darken-3">Return to Competition Home</Link>
+            <QueryDBForm competition_id={ match.params.id } />
+            <Results />
+          </div>
         </Col>
       </Row>
     );

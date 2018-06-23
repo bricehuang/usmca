@@ -30,7 +30,7 @@ class ContestPreviewDumb extends React.Component {
                       <th>Target Number of Problems</th>
                       <th>Added Problems</th>
                     </tr>
-                  </thead> 
+                  </thead>
                   <tbody>
                   {
                     content.tests.map((test, key) => (
@@ -93,9 +93,11 @@ class ContestPreviewDumb extends React.Component {
             "czars": { data },
             "test-solvers": { data }
           };
-
+    // contest.competition._id if competition is object, contest.competition if competition is id
+    const parentCompetitionId = contest.competition._id ? contest.competition._id : contest.competition;
     return (
       <Col s={12}>
+        <Link to={ `/view-competition/${parentCompetitionId}` } className="waves-effect waves-light btn teal darken-3">Return to Competition Home</Link>
         <h2 className="teal-text text-darken-3">{contest.name}</h2>
         <VerticalNav tabs={ this.contestTabs } childProps={ childProps } active="tests" />
       </Col>
@@ -113,11 +115,13 @@ class ViewContestPage extends React.Component {
     const { match, getContest } = this.props;
     getContest(match.params.id);
   }
-  
+
   render() {
     return (
       <Row className="container">
-        <ContestPreview />
+        <div style={{marginTop: "36px"}}>
+          <ContestPreview />
+        </div>
       </Row>
     );
   }
