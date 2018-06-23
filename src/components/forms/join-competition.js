@@ -11,7 +11,6 @@ import {
   competitionsInputOptions,
   CompetitionsInput,
   CompetitionsSelect,
-  LocationArrayInput
 } from "./utilities";
 import {
   joinCompetition

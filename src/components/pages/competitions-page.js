@@ -13,41 +13,16 @@ import CreateCompetitionForm from "../forms/create-competition";
 import JoinCompetitionForm from "../forms/join-competition";
 import * as Forms from "../forms";
 import { permissionsDisplay } from "../../../constants";
-
-const makeURL = url => {
-  if (!url) return url;
-  const http = "http://",
-        https = "https://",
-        valid = (url.substr(0, http.length) === http) ||
-                (url.substr(0, https.length) === https);
-  return valid ? url : http + url;
-}
-
-const DIRECTOR = "director",
-      PENDING_DIRECTOR = "pending_director",
-      CZAR = "czar",
-      SECURE = "secure_member",
-      MEMBER = "member",
-      NONMEMBER = "nonmember";
-
-const competitionMembership = (competition, userId, populated = true) => {
-  const finder = populated ?
-    user => user._id === userId : // users are populated
-    user => user === userId; // users are ids themselves
-  if (_.find(competition.directors, finder))
-    return competition.valid ? DIRECTOR : PENDING_DIRECTOR;
-  else if (_.find(competition.czars, finder)) return CZAR;
-  else if (_.find(competition.secure_members, finder)) return SECURE;
-  else if (_.find(competition.members, finder)) return MEMBER;
-  else return NONMEMBER;
-}
+import {
+  DIRECTOR, PENDING_DIRECTOR, CZAR, SECURE, MEMBER, NONMEMBER, competitionMembership, makeURL
+} from "../utilities";
 
 class CompetitionsPage extends React.Component {
   componentWillMount() {
     this.props.memberCompetitions();
   }
 
-  competitionInfo(competition) {
+  competitionInfoSummary(competition) {
     const membership = competitionMembership(competition, auth.userId());
     return (
       <div className="round-container">
@@ -56,12 +31,8 @@ class CompetitionsPage extends React.Component {
           <li>Name: { competition.name }</li>
           <li>Short name: { competition.short_name }</li>
           <li>Website: { (competition.website) ? <a href={ makeURL(competition.website) } className="teal-text text-darken-3 underline-hover">{ competition.website }</a> : "N/A"}</li>
-          <li><h3>Membership Info</h3></li>
-          <li>You are a: <span className="bold-text">{ permissionsDisplay[membership] }</span></li>
-          { membership === DIRECTOR &&  <li><a className="teal-text text-darken-3 underline-hover">Step down as director</a></li> }
-          <li><a className="teal-text text-darken-3 underline-hover">Leave competition</a></li>
           {
-            (membership === DIRECTOR || membership === SECURE) && (
+            (membership === DIRECTOR || membership == CZAR || membership === SECURE) && (
               <div>
                 <li><h3>Competition Portal</h3></li>
                 <li><Link to={ `/view-competition/${competition._id}` } className="waves-effect waves-light btn teal darken-3">Enter Competition</Link></li>
@@ -74,6 +45,7 @@ class CompetitionsPage extends React.Component {
   }
 
   render () {
+    // console.log(this.props.competitions.content);
     const { competitions: { content, message, requestStatus } } = this.props;
     return (
       <Row className="container">
@@ -89,7 +61,7 @@ class CompetitionsPage extends React.Component {
                   <div key={idx}>
                     <h2 className="teal-text text-darken-3">{ competition.short_name }</h2>
                     <div style={{borderBottom: "1px solid #cfd8dc"}}>
-                      {this.competitionInfo(competition)}
+                      {this.competitionInfoSummary(competition)}
                     </div><br />
                   </div>
                 ))

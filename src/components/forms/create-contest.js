@@ -11,7 +11,6 @@ import {
   competitionsInputOptions,
   CompetitionsInput,
   CompetitionsSelect,
-  LocationArrayInput
 } from "./utilities";
 import { postContest } from "../../actions";
 import { CONTEST_POST, requestStatuses } from "../../actions/types";
@@ -23,18 +22,17 @@ const NameInput = ({ input, meta, ...rest }) => (
       ),
       DateInput = ({ input, meta, ...rest }) => (
         <Input s={12} label="Date" type="date" { ...input } { ...rest } />
-      ),
-      LocationsInput = ({ input, meta, ...rest }) => (
-        <LocationArrayInput { ...input } { ...rest } />
       );
 
-class CreateContestForm extends React.Component { 
-  onSubmit = ({ name, date, locations }) => {
+class CreateContestForm extends React.Component {
+  onSubmit = ({ name, date }) => {
     const { competition_id, postContest, errorHandler } = this.props;
-    if (!name || !date || !locations) {
+    if (!name || !date ) {
+      console.log(name);
+      console.log(date);
       return errorHandler('Please fill out all fields.');
     }
-    postContest({ competition_id, name, date, locations });
+    postContest({ competition_id, name, date });
   }
 
   resetForm = () => {
@@ -56,9 +54,6 @@ class CreateContestForm extends React.Component {
           </div>
           <div>
             <Field name="date" component={ DateInput } />
-          </div>
-          <div>
-            <Field name="locations" component={ LocationsInput } />
           </div>
           <RightButtonPanel>
             <Button type="submit" className="teal darken-3">Create</Button>
@@ -100,8 +95,8 @@ const mapStateToProps = state => ({
             }
           });
         },
-        postContest: ({ competition_id, name, date, locations }) => {
-          postContest({ competition_id, name, date, locations})(dispatch);
+        postContest: ({ competition_id, name, date }) => {
+          postContest({ competition_id, name, date })(dispatch);
         }
       });
 

@@ -63,6 +63,7 @@ export const USER_INFO = 'user_info', // get user info
 /* competitions */
 export const COMP_REQ = 'comp_req', // request to create competition
              COMP_GET = 'comp_get', // get all competitions
+             COMP_FETCH_ONE = 'comp_fetch_one', // get specific competition by id
              COMP_FETCH_MINE = 'comp_fetch_mine', // get user competition info
              COMP_FETCH_DIR = 'comp_fetch_dir', // get user competition info
              COMP_REQ_JOIN = 'comp_req_join', // request to join competition

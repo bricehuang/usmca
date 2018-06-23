@@ -2,7 +2,7 @@
 
 ## User
 ```
-{ 
+{
   name: String,
   email: String,
   password: String,
@@ -20,7 +20,7 @@
 
 ## Competition
 ```
-{ 
+{
   name: String,
   short_name: String,
   website: String,
@@ -52,7 +52,7 @@
 {
   author: User,
   body: String,
-  type: Enum(REQUEST, INVITE), 
+  type: Enum(REQUEST, INVITE),
   action_type: Enum(COMP, JOIN),
   competition: Competition,
   contest, Contest,
@@ -66,10 +66,6 @@
 ```
 {
   competition: Competition,
-  location: [ {
-    site: String,
-    address: String
-  } ],
   active: Boolean,
   name: String,
   date: Date,

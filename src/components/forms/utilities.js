@@ -192,96 +192,6 @@ const CompetitionsSelect = connect(
 )(CompetitionsSelectDumb);
 
 /*******************************************************************************
- * Array of locations input for contests.
- ******************************************************************************/
-
-class LocationArrayInput extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      site: '',
-      address: '',
-      value: []
-    };
-  }
-
-  renderList = () => {
-    if (this.state.value.length === 0) return <Row><Col s={12}><p>No locations added.</p></Col></Row>;
-    return this.state.value.map((loc, idx) => (
-      <Row key={idx}>
-        <Col s={5}>{ loc.site }</Col>
-        <Col s={6}>{ loc.address }</Col>
-        <Col s={1}>
-          <a className="teal-text text-darken-3 right" onClick={ this.handleRemoveClick(idx) }>
-            <i className="fa fa-times" aria-hidden="true"></i>
-          </a>
-        </Col>
-      </Row>
-    ));
-  }
-
-  handleAddClick = () => {
-    if (!this.state.site) return;
-    this.state.value.push({
-      site: this.state.site,
-      address: this.state.address
-    });
-    this.state.site = "";
-    this.siteInput._onChange({
-      target: { value: "" }
-    }, "");
-    this.state.address = "";
-    this.addressInput._onChange({
-      target: { value: "" }
-    }, "");
-
-    const { onChange } = this.props;
-    if (onChange) onChange(this.state.value);
-    this.forceUpdate();
-  }
-
-  handleRemoveClick = locIdx => (
-    () => {
-      _.remove(this.state.value, (val, idx) => (idx === locIdx));
-
-      const { onChange } = this.props;
-      if (onChange) onChange(this.state.value);
-      this.forceUpdate();
-    }
-  )
-
-  render() {
-    const siteLabel = "Site Name",
-          addressLabel = "Address (optional)";
-    return (
-      <div>
-        {
-          this.renderList()
-        }
-        <ControlledInput
-          type="text"
-          label={siteLabel}
-          s={5}
-          ref={ elem => { this.siteInput = elem; } }
-          onChange={(evt, val) => { this.state.site = evt.target.value; } } />
-        <ControlledInput
-          type="text"
-          label={addressLabel}
-          s={5}
-          ref={ elem => { this.addressInput = elem; } }
-          onChange={(evt, val)=> { this.state.address = evt.target.value; } } />
-        <Col s={2}>
-          <a className="teal-text text-darken-3 right" style={{marginTop: "30px"}} onClick={ this.handleAddClick }>
-            <i className="fa fa-plus" aria-hidden="true"></i>
-          </a>
-        </Col>
-      </div>
-    );
-  }
-}
-
-/*******************************************************************************
  * Subjects input.
  ******************************************************************************/
 
@@ -413,7 +323,6 @@ export {
   competitionsInputOptions,
   CompetitionsInput,
   CompetitionsSelect,
-  LocationArrayInput,
   SubjectsInput,
   KaTeXInput,
   UsersAutocompleteInput

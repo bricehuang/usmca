@@ -3,10 +3,6 @@ const mongoose = require('mongoose'),
 
 const contestSchema = new Schema({
   competition: { type: Schema.Types.ObjectId, ref: 'Competition', required: true },
-  locations: [ {
-    site: { type: String, required: true },
-    address: String
-  } ],
   active: { type: Boolean, required: true, default: true },
   name: { type: String, required: true },
   date: Date,
@@ -19,7 +15,7 @@ const contestSchema = new Schema({
 });
 
 contestSchema.pre('validate', function(next) {
-  if (!this.test_solve_deadline && this.date) 
+  if (!this.test_solve_deadline && this.date)
     this.test_solve_deadline = this.date;
 
   const now = new Date();

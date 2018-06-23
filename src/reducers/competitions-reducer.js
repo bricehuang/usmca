@@ -1,6 +1,7 @@
-import { 
+import {
   COMP_REQ,
   COMP_GET,
+  COMP_FETCH_ONE,
   COMP_FETCH_DIR,
   COMP_FETCH_MINE,
   COMP_REQ_JOIN,
@@ -9,21 +10,24 @@ import {
 } from '../actions/types';
 
 const { SUCCESS, PENDING, SUBMITTED, IDLE, ERROR } = requestStatuses;
-const INITIAL_STATE = { 
+const INITIAL_STATE = {
   requestCompetition: { message: '', requestStatus: IDLE },
   allCompetitions: { content: [], message: '', requestStatus: IDLE },
+  competition: { content: null, message: '', requestStatus: IDLE },
   memberCompetitions: { content: [], message: '', requestStatus: IDLE },
   directorCompetitions: { content: [], message: '', requestStatus: IDLE },
   joinCompetition: { content: null, message: '', requestStatus: IDLE },
   inviteCompetition: { content: null, message: '', requestStatus: IDLE }
 };
 
-export default function (state = INITIAL_STATE, { type, payload }) {  
+export default function (state = INITIAL_STATE, { type, payload }) {
   switch(type) {
     case COMP_REQ:
       return { ...state, requestCompetition: payload };
     case COMP_GET:
       return { ...state, allCompetitions: payload };
+    case COMP_FETCH_ONE:
+      return { ...state, competition: payload };
     case COMP_FETCH_MINE:
       return { ...state, memberCompetitions: payload };
     case COMP_FETCH_DIR:

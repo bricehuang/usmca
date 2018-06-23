@@ -6,6 +6,7 @@ import {
   COMP_REQ,
   COMP_RES,
   COMP_GET,
+  COMP_FETCH_ONE,
   COMP_FETCH_MINE,
   COMP_FETCH_DIR,
   COMP_REQ_JOIN,
@@ -74,6 +75,30 @@ export function memberCompetitions(options = { info: false }) {
           if (!success) dispatch(Object.assign(action, errorPayload(message)));
           else dispatch(Object.assign(action, successPayload({
             content: competitions
+          })));
+        }),
+        serverError(action, dispatch)
+      );
+    });
+  }
+}
+
+export function fetchCompetition(id) {
+  let action = { type: COMP_FETCH_ONE };
+  return dispatch => {
+    authenticate(action, dispatch, userId => {
+      dispatch(Object.assign(action, pendingPayload()));
+      const url = `/api/competitions/${id}`;
+      fetch(url, {
+        method: 'get',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      }).then(
+        res => res.json().then(({ success, message, competition }) => {
+          if (!success) dispatch(Object.assign(action, errorPayload(message)));
+          else dispatch(Object.assign(action, successPayload({
+            content: competition
           })));
         }),
         serverError(action, dispatch)

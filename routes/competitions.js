@@ -150,6 +150,42 @@ router.get('/', (req, res) => {
   });
 });
 
+function id_in_user_list(id, users) {
+  for (let user of users) {
+    if (user._id == id) {
+      return true;
+    }
+  }
+  return false;
+}
+
+router.get('/:competition_id', auth.verifyJWT, (req, res) => {
+  const competition_id = req.params.competition_id;
+  Competition.findById(competition_id)
+  .populate('contests members secure_members czars directors')
+  .exec((err, competition) => {
+    if (err) {
+      console.log(err);
+      handler(false, 'Failed to load competition.', 503)(req, res);
+    } else {
+      const id = req.user._id.toString();
+      if (
+        // TODO this is hacky
+        id_in_user_list(id, competition.directors) ||
+        id_in_user_list(id, competition.czars) ||
+        id_in_user_list(id, competition.secure_members)
+        // competition.directors.indexOf(req.user._id.toString()) === -1 && // competition director
+        // competition.czars.indexOf(req.user._id.toString()) === -1 && // competition czar
+        // competition.secure_members.indexOf(req.user._id.toString()) === -1 // competition secure member
+      ) {
+        handler(true, 'Successfully loaded competition.', 200, { competition })(req, res);
+      } else {
+        handler(false, 'Unauthorized access to competition.', 401)(req, res);
+      }
+    }
+  });
+});
+
 router.post('/invite', auth.verifyJWT, (req, res) => {
   const { type, action_type, user_id, competition_id, request_id } = req.body;
   switch (type) {

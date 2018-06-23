@@ -4,8 +4,8 @@ const router = require('express').Router(),
       auth = require('../config/auth'),
       handler = require('../utils/handler'),
       { requestTypes, requestEnum } = require('../constants'),
-      { 
-        sendRequests, 
+      {
+        sendRequests,
         removeRequests,
         sendNotifications,
         replyRequest
@@ -21,7 +21,7 @@ const User = require('../database/user'),
       Notification = require('../database/notification');
 
 router.post('/', auth.verifyJWT, (req, res) => {
-  const { competition_id, name, date, locations } = req.body;
+  const { competition_id, name, date } = req.body;
   Competition.findById(competition_id, (err, competition) => {
     if (err) {
       handler(false, 'Database failed to find the associated competition.', 503)(req, res);
@@ -35,7 +35,6 @@ router.post('/', auth.verifyJWT, (req, res) => {
           competition: competition._id,
           name: name,
           date: new Date(date),
-          locations: locations
         });
         contest.save(err => {
           if (err) {
@@ -108,7 +107,7 @@ router.post('/tests/:test_id', (req, res) => {
       /* check if problem is in the test already */
       } else if (
         _.find(
-          req.test.problems, 
+          req.test.problems,
           existingProblem => existingProblem._id.toString() === problem._id.toString()
         )
       ) {
@@ -190,8 +189,8 @@ router.post('/:contest_id/tests', auth.verifyJWT, (req, res) => {
 router.post('/:contest_id/test-solvers', auth.verifyJWT, (req, res) => {
   const { contest_id } = req.params,
         { requested_test_solvers } = req.body;
-  Contest.findByIdAndUpdate(contest_id, { 
-    requested_test_solvers 
+  Contest.findByIdAndUpdate(contest_id, {
+    requested_test_solvers
   }, (err, contest) => {
     if (err) handler(false, 'Failed to load contest.', 503)(req, res);
     else if (!contest) handler(false, 'Contest does not exist.', 400)(req, res);

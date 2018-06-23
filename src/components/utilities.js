@@ -514,6 +514,34 @@ class VerticalNav extends React.Component {
   }
 }
 
+const makeURL = url => {
+  if (!url) return url;
+  const http = "http://",
+        https = "https://",
+        valid = (url.substr(0, http.length) === http) ||
+                (url.substr(0, https.length) === https);
+  return valid ? url : http + url;
+}
+
+const DIRECTOR = "director",
+      PENDING_DIRECTOR = "pending_director",
+      CZAR = "czar",
+      SECURE = "secure_member",
+      MEMBER = "member",
+      NONMEMBER = "nonmember";
+
+const competitionMembership = (competition, userId, populated = true) => {
+  const finder = populated ?
+    user => user._id === userId : // users are populated
+    user => user === userId; // users are ids themselves
+  if (_.find(competition.directors, finder))
+    return competition.valid ? DIRECTOR : PENDING_DIRECTOR;
+  else if (_.find(competition.czars, finder)) return CZAR;
+  else if (_.find(competition.secure_members, finder)) return SECURE;
+  else if (_.find(competition.members, finder)) return MEMBER;
+  else return NONMEMBER;
+}
+
 export {
   Notification,
   RightButtonPanel,
@@ -525,5 +553,13 @@ export {
   Counter,
   HorizontalNav,
   VerticalNav,
-  Request
+  Request,
+  DIRECTOR,
+  PENDING_DIRECTOR,
+  CZAR,
+  SECURE,
+  MEMBER,
+  NONMEMBER,
+  competitionMembership,
+  makeURL,
 };
