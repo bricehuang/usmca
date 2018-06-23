@@ -62,6 +62,7 @@ router.get('/:contest_id', auth.verifyJWT, (req, res) => {
   const { contest_id } = req.params;
   Contest.findById(contest_id)
   .populate('tests')
+  .populate('competition')
   .populate('test_solvers', 'name email')
   .exec((err, contest) => {
     if (err) handler(false, 'Failed to load contest.', 503)(req, res);

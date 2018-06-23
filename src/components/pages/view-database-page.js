@@ -4,16 +4,20 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { ProblemPreview } from "../utilities";
-import { fetchDatabase } from "../../actions";
+import { fetchCompetition, fetchDatabase } from "../../actions";
 import QueryDBForm from "../forms/query-db";
 
 const mapStateToProps = state => ({
-  database: state.problems.database
+  competition: state.competitions.competition,
+  database: state.problems.database,
 });
 const mapDispatchToProps = dispatch => ({
   fetchDatabase: id => {
     fetchDatabase(id)(dispatch);
-  }
+  },
+  fetchCompetition: id => {
+    fetchCompetition(id)(dispatch);
+  },
 });
 
 const TitleDumb = ({ database }) => {
@@ -49,18 +53,35 @@ const Results= connect(mapStateToProps)(ResultsDumb);
 
 class DatabasePage extends React.Component {
   componentWillMount() {
-    const { match, fetchDatabase } = this.props;
+    const { match, fetchDatabase, fetchCompetition } = this.props;
     fetchDatabase(match.params.id);
+    fetchCompetition(match.params.id);
+  }
+
+  competitionLink(competition) {
+    if (competition){
+      return (
+        <Link to={ `/view-competition/${ competition._id }` }
+              className="waves-effect waves-light btn teal darken-3">
+          Return to { competition.name } Home
+        </Link>
+      )
+    } else {
+      return <div></div>
+    }
   }
 
   render() {
-    const { match } = this.props;
+    const { match, competition } = this.props;
+    const { content } = competition;
+
+
     return (
       <Row className="container">
         <Col s={12}>
           <div style={{marginTop: "36px"}}>
             <Title />
-            <Link to={ `/view-competition/${match.params.id}` } className="waves-effect waves-light btn teal darken-3">Return to Competition Home</Link>
+            { this.competitionLink(content) }
             <QueryDBForm competition_id={ match.params.id } />
             <Results />
           </div>

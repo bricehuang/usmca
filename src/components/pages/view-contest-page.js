@@ -95,9 +95,10 @@ class ContestPreviewDumb extends React.Component {
           };
     // contest.competition._id if competition is object, contest.competition if competition is id
     const parentCompetitionId = contest.competition._id ? contest.competition._id : contest.competition;
+    console.log(contest.competition);
     return (
       <Col s={12}>
-        <Link to={ `/view-competition/${parentCompetitionId}` } className="waves-effect waves-light btn teal darken-3">Return to Competition Home</Link>
+        <Link to={ `/view-competition/${contest.competition._id}` } className="waves-effect waves-light btn teal darken-3">Return to { contest.competition.short_name } Home</Link>
         <h2 className="teal-text text-darken-3">{contest.name}</h2>
         <VerticalNav tabs={ this.contestTabs } childProps={ childProps } active="tests" />
       </Col>
