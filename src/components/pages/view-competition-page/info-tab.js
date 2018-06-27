@@ -28,6 +28,8 @@ const competitionInfoDisplay = (competition) => {
             <div>
               <li><h3>Database</h3></li>
               <li><Link to={ `/view-database/${competition._id}` } className="waves-effect waves-light btn teal darken-3">View database</Link></li>
+              <li><h3>Propose Problem</h3></li>
+              <li><Link to={ `/propose/${competition._id}` } className="waves-effect waves-light btn teal darken-3">Propose Problem</Link></li>
             </div>
           )
         }

@@ -13,7 +13,7 @@ const Routes = ({ authenticated }) => (
     <Route path="/home/:tab" component={ authenticated ? Pages.AccountPage : Pages.IndexPage } />
     <Route exact path="/competitions" component={ Pages.CompetitionsPage }/>
     <Route exact path="/login" component={ Pages.LoginPage }/>
-    <Route exact path="/propose" component={ requireAuth(Pages.Propose) }/>
+    <Route exact path="/propose/:competition_id" component={ requireAuth(Pages.Propose) }/>
     <Route exact path="/account" component={ requireAuth(Pages.AccountInfoPage) }/>
     <Route exact path="/notifications" component={ requireAuth(Pages.NotificationsPage) }/>
     <Route exact path="/about" component={ Pages.About }/>;
@@ -22,7 +22,7 @@ const Routes = ({ authenticated }) => (
     <Route path="/view-database/:id" component={ requireAuth(Pages.ViewDatabasePage) }/>
     <Route path="/view-test/:id" component={ requireAuth(Pages.ViewTestPage) }/>
     <Route path="/view-problem/:id" component={ requireAuth(Pages.ViewProblemPage) }/>
-    <Route path="/edit-problem/:id" component={ requireAuth(Pages.Propose) }/>
+    <Route path="/edit-problem/:problem_id" component={ requireAuth(Pages.Propose) }/>
     <Route path="*" component={ Pages.NotFoundPage } />
   </Switch>
 );
