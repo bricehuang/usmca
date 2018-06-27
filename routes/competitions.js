@@ -124,7 +124,7 @@ router.post('/', auth.verifyJWT, (req, res) => {
                 });
                 /* send notification to user and remove request from admins */
                 replyRequest(admins, request, notification, req, res, () => {
-                  handler(true, 'Successfully rejected competiton request.', 200)(req, res);
+                  handler(true, 'Successfully rejected competition request.', 200)(req, res);
                 });
               });
             }
@@ -166,6 +166,9 @@ router.get('/:competition_id', auth.verifyJWT, (req, res) => {
   .exec((err, competition) => {
     if (err) {
       console.log(err);
+      handler(false, 'Failed to load competition.', 503)(req, res);
+    } else if (!competition) {
+      console.log('error: bad competition id');
       handler(false, 'Failed to load competition.', 503)(req, res);
     } else {
       const id = req.user._id.toString();

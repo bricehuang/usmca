@@ -221,6 +221,7 @@ const mapStateToProps = state => ({
       });
 
 const Initialized = props => {
+  console.log(props.proposal);
   const Component = reduxForm({
     form: 'propose',
     initialValues: props.proposal ? {

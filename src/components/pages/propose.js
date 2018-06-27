@@ -23,8 +23,6 @@ class ProposePage extends React.Component {
     let returnButton;
     if (edit) {
       const { content, message, requestStatus } = proposal;
-      console.log(proposal);
-      console.log(initialized);
       if (content) {
         returnButton = (
           <div>
