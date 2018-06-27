@@ -19,10 +19,12 @@ class ProposePage extends React.Component {
   render() {
     const { match, proposal, competition } = this.props,
           edit = !!(match.params && match.params.problem_id),
-          initialized = edit && proposal;
+          initialized = !! (edit && proposal);
     let returnButton;
     if (edit) {
       const { content, message, requestStatus } = proposal;
+      console.log(proposal);
+      console.log(initialized);
       if (content) {
         returnButton = (
           <div>
