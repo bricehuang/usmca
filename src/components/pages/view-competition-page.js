@@ -6,6 +6,7 @@ import _ from "lodash";
 
 import InfoTab from "./view-competition-page/info-tab";
 import ContestsTab from "./view-competition-page/contests-tab";
+import MyProblemsTab from "./view-competition-page/my-problems-tab";
 import { HorizontalNav } from "../utilities";
 import { fetchCompetition } from "../../actions"
 import auth from "../../auth";
@@ -37,14 +38,14 @@ class ViewCompetitionPage extends React.Component {
           to: '/view-competition/contests',
           view: () => <ContestsTab />
         },
+        "problems": {
+          title: () => <Title fa="pencil-square" title="My Proposals"/>,
+          to: "/view-competition/problems",
+          view: () => <MyProblemsTab />
+        },
         "competitions": {
           title: () => <Title fa="trophy" title="Competitions"/>,
           to: "/view-competition/competitions",
-          view: () => <div />
-        },
-        "problems": {
-          title: () => <Title fa="pencil-square" title="Problems"/>,
-          to: "/view-competition/problems",
           view: () => <div />
         },
       };

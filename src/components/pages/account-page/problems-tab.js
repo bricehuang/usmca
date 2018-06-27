@@ -44,7 +44,8 @@ ProblemsTab.propTypes = {
 };
 
 const mapStateToProps = state => ({
-        proposals: state.problems.myProposals
+        competition: state.competitions.competition,
+        proposals: state.problems.myProposals,
       }),
       mapDispatchToProps = dispatch => ({
         fetchMyProposals: () => {

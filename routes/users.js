@@ -98,6 +98,22 @@ router.get('/problems', auth.verifyJWT, (req, res) => {
   });
 });
 
+/* get problems of the user in specified competition */
+router.get('/problems/:competition_id', auth.verifyJWT, (req, res) => {
+  const competition_id = req.params.competition_id;
+  Problem.find({ author: req.user._id, competition: competition_id }, null, {
+    sort: { updated: -1 }
+  }, (err, problems) => {
+    if (err) {
+      return handler(false, 'Database failed to load user\'s problems.', 503)(req, res);
+    } else {
+      return handler(true, 'Successfully user\'s problems info.', 200, {
+        problems: problems
+      })(req, res);
+    }
+  });
+});
+
 /* post a new problem */
 router.post('/problems', auth.verifyJWT, (req, res) => {
   const {

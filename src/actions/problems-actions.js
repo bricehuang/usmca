@@ -50,6 +50,20 @@ export function fetchMyProposals() {
   });
 }
 
+export function fetchMyProposalsForCompetition(competition_id) {
+  return authAPIAction({
+    type: PROB_FETCH_MINE,
+    url: `/api/users/problems/${competition_id}`,
+    opts: {
+      method: 'get',
+      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+    },
+    formatData: ({ success, message, problems }) => ({
+      success, message, content: problems
+    })
+  });
+}
+
 export function postProposal({
     competition_id, subject, difficulty, statement, answer, solution
   }) {
