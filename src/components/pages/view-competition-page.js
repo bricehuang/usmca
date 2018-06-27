@@ -22,7 +22,7 @@ class ViewCompetitionPage extends React.Component {
   }
 
   render() {
-    const {competition: { content, message, requestStatus } } = this.props;
+    const {competition: { content, message, requestStatus }, match } = this.props;
     console.log('THIS IS THE COMPETITION');
     console.log(content);
 
@@ -49,10 +49,16 @@ class ViewCompetitionPage extends React.Component {
           view: () => <div />
         },
       };
+
+      let active = match.params.tab || "info";
+      if (!(_.find(_.keys(competitionTabs), tab => tab === active))) {
+        active = "info";
+      }
+
       return (
         <Row className="container">
           <h2 className="teal-text text-darken-3">{ content.short_name }</h2>
-          <HorizontalNav tabs={ competitionTabs } active={ "info" }/>
+          <HorizontalNav tabs={ competitionTabs } active={ active }/>
         </Row>
       );
     } else {
