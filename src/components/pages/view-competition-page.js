@@ -10,6 +10,10 @@ import MyProblemsTab from "./view-competition-page/my-problems-tab";
 import { HorizontalNav } from "../utilities";
 import { fetchCompetition } from "../../actions"
 import auth from "../../auth";
+import Spinner from "../spinner";
+import Error from "../error";
+import { requestStatuses } from "../../actions/types";
+const { SUCCESS, PENDING, SUBMITTED, ERROR, IDLE } = requestStatuses;
 
 const Title = ({ fa, title}) => (
   <div><i className={ "fa fa-"+fa } aria-hidden="true"/> { title }</div>
@@ -61,8 +65,23 @@ class ViewCompetitionPage extends React.Component {
           <HorizontalNav tabs={ competitionTabs } active={ active }/>
         </Row>
       );
+    } else if (requestStatus === ERROR) {
+      return (
+        <Row className="container">
+          <div style={{marginTop: "36px"}}>
+            <Error error={ true } message={ message }/>
+          </div>
+        </Row>
+      );
+    } else if (requestStatus === PENDING) {
+      return (
+        <Row className="container">
+          <div style={{marginTop: "36px"}}>
+            <Spinner />
+          </div>
+        </Row>
+      );
     } else {
-      // TODO: spinner
       return <div></div>
     }
 
