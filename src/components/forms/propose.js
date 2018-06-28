@@ -22,9 +22,9 @@ const { SUCCESS, PENDING, SUBMITTED, IDLE, ERROR } = requestStatuses;
 
 class ProposeForm extends React.Component {
   onSubmit = ({
-    competition_id, subject, difficulty, statement, answer, solution
+    subject, difficulty, statement, answer, solution
   }) => {
-    const { errorHandler, postProposal, putProposal, edit } = this.props;
+    const { errorHandler, postProposal, putProposal, edit, competition_id } = this.props;
     if (!statement) {
       errorHandler('Please fill out required fields.');
     } else if (edit) {
@@ -67,15 +67,16 @@ class ProposeForm extends React.Component {
     }
   }
 
-  competitionField = ({ input, meta, ...rest }) => (
-    <CompetitionsSelect
-      s={4}
-      type={ competitionsInputOptions.MEMBER }
-      publicDatabase={ true }
-      disabled={ this.props.edit }
-      { ...input }
-      { ...rest } />
-  )
+  // TODO keeping this here for future reference
+  // competitionField = ({ input, meta, ...rest }) => (
+  //   <CompetitionsSelect
+  //     s={4}
+  //     type={ competitionsInputOptions.MEMBER }
+  //     publicDatabase={ true }
+  //     disabled={ this.props.edit }
+  //     { ...input }
+  //     { ...rest } />
+  // )
 
   subjectField = ({ input, meta, ...rest }) => (
     <SubjectsInput s={4} { ...input } { ...rest } />
@@ -110,19 +111,17 @@ class ProposeForm extends React.Component {
   )
 
   render() {
-    const { handleSubmit, edit, postStatus, putStatus } = this.props,
+    const { handleSubmit, edit, postStatus, putStatus, competition_id } = this.props,
           { requestStatus, message } = edit ? putStatus : postStatus;
 
     return (!edit && requestStatus === SUCCESS) ? (
       <div>
-        <p>Problem submitted! Click <Link to="/propose" onClick={ this.resetForm }>here</Link> to propose another problem.</p>
+
+        <p>Problem submitted! Click <Link to={`/propose/${competition_id}`} onClick={ this.resetForm }>here</Link> to propose another problem.</p>
       </div>
     ) : (
       <form className="col s12" onSubmit={ handleSubmit(this.onSubmit) }>
         <Row>
-          <div>
-            <Field name="competition_id" component={ this.competitionField } />
-          </div>
           <div>
             <Field name="subject" component={ this.subjectField } />
           </div>

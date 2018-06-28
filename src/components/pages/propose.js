@@ -58,11 +58,12 @@ class ProposePage extends React.Component {
         <div style={{marginTop: "36px"}}>
           { returnButton }
           <h2 className="teal-text text-darken-4">
-            { edit ? "Edit a Problem" : "Propose a Problem" }
+            { edit ? "Edit a Problem" : 'Propose a Problem' }
           </h2>
           <ProposeForm
             edit={ edit }
-            proposal={ initialized ? proposal.content : null }/>
+            proposal={ initialized ? proposal.content : null }
+            competition_id = { competition.content ? competition.content._id : null }/>
         </div>
       </Row>
     );

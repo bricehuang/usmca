@@ -31,8 +31,8 @@ class ViewCompetitionPage extends React.Component {
 
   render() {
     const {competition: { content, message, requestStatus }, match } = this.props;
-    console.log('THIS IS THE COMPETITION');
-    console.log(content);
+    // console.log('THIS IS THE COMPETITION');
+    // console.log(content);
     if (content) {
       const thisPageUrl = `/view-competition/${content._id}`;
       let competitionTabs = {
