@@ -7,6 +7,7 @@ import _ from "lodash";
 import InfoTab from "./view-competition-page/info-tab";
 import ContestsTab from "./view-competition-page/contests-tab";
 import MyProblemsTab from "./view-competition-page/my-problems-tab";
+import MembersTab from "./view-competition-page/members-tab";
 import { HorizontalNav } from "../utilities";
 import { fetchCompetition } from "../../actions"
 import auth from "../../auth";
@@ -14,6 +15,9 @@ import Spinner from "../spinner";
 import Error from "../error";
 import { requestStatuses } from "../../actions/types";
 const { SUCCESS, PENDING, SUBMITTED, ERROR, IDLE } = requestStatuses;
+
+import { DIRECTOR, competitionMembership } from "../utilities";
+
 
 const Title = ({ fa, title}) => (
   <div><i className={ "fa fa-"+fa } aria-hidden="true"/> { title }</div>
@@ -29,30 +33,36 @@ class ViewCompetitionPage extends React.Component {
     const {competition: { content, message, requestStatus }, match } = this.props;
     console.log('THIS IS THE COMPETITION');
     console.log(content);
-
     if (content) {
+      const thisPageUrl = `/view-competition/${content._id}`;
       let competitionTabs = {
         "info": {
           title: () => <Title fa="trophy" title="Info" />,
-          to: '/view-competition/info',
+          to: thisPageUrl,
           view: () => <InfoTab />
         },
         "contests": {
           title: () => <Title fa="trophy" title="Contests" />,
-          to: '/view-competition/contests',
+          to: thisPageUrl,
           view: () => <ContestsTab />
         },
         "problems": {
           title: () => <Title fa="pencil-square" title="My Proposals"/>,
-          to: "/view-competition/problems",
+          to: thisPageUrl,
           view: () => <MyProblemsTab />
         },
-        "competitions": {
-          title: () => <Title fa="trophy" title="Competitions"/>,
-          to: "/view-competition/competitions",
-          view: () => <div />
-        },
       };
+
+      const membership = competitionMembership(content, auth.userId());
+      if (membership === DIRECTOR) {
+        competitionTabs = Object.assign(competitionTabs, {
+          "members": {
+            title: () => <Title fa="trophy" title="Manage Membership"/>,
+            to: thisPageUrl,
+            view: () => <MembersTab />
+          },
+        });
+      }
 
       let active = match.params.tab || "info";
       if (!(_.find(_.keys(competitionTabs), tab => tab === active))) {
