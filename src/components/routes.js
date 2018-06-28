@@ -9,9 +9,8 @@ import * as Pages from "./pages";
 
 const Routes = ({ authenticated }) => (
   <Switch>
-    <Route exact path="/" component={ authenticated ? Pages.AccountPage : Pages.IndexPage } />
-    <Route path="/home/:tab" component={ authenticated ? Pages.AccountPage : Pages.IndexPage } />
-    <Route exact path="/competitions" component={ Pages.CompetitionsPage }/>
+    <Route exact path="/" component={ authenticated ? Pages.CompetitionsPage : Pages.IndexPage } />
+    <Route exact path="/home" component={ authenticated ? Pages.CompetitionsPage : Pages.IndexPage }/>
     <Route exact path="/login" component={ Pages.LoginPage }/>
     <Route exact path="/propose/:competition_id" component={ requireAuth(Pages.Propose) }/>
     <Route exact path="/account" component={ requireAuth(Pages.AccountInfoPage) }/>
