@@ -88,7 +88,7 @@ export function fetchCompetition(id) {
   return dispatch => {
     authenticate(action, dispatch, userId => {
       dispatch(Object.assign(action, pendingPayload()));
-      const url = `/api/competitions/${id}`;
+      const url = `/api/competitions/lookup/${id}`;
       fetch(url, {
         method: 'get',
         headers: {

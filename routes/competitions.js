@@ -159,7 +159,7 @@ function id_in_user_list(id, users) {
   return false;
 }
 
-router.get('/:competition_id', auth.verifyJWT, (req, res) => {
+router.get('/lookup/:competition_id', auth.verifyJWT, (req, res) => {
   const competition_id = req.params.competition_id;
   Competition.findById(competition_id)
   .populate('contests members secure_members czars directors')

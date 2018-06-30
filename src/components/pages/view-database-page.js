@@ -74,7 +74,8 @@ class DatabasePage extends React.Component {
   render() {
     const { match, competition } = this.props;
     const { content } = competition;
-
+    console.log('DATABASE');
+    console.log(this.props.database);
 
     return (
       <Row className="container">
