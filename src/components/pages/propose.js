@@ -31,9 +31,9 @@ class ProposePage extends React.Component {
               Return to Problem
             </Link>
             <div style={{height: "5px"}}></div>
-            <Link to={ `/view-competition/${content.competition._id}` }
+            <Link to={ `/view-database/${content.competition._id}` }
                   className="waves-effect waves-light btn teal darken-3">
-              Return to { content.competition.short_name } Home
+              Return to { content.competition.short_name } Database
             </Link>
           </div>
         )

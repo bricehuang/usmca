@@ -29,13 +29,13 @@ class MyProblemsTab extends React.Component {
             </div>
           ))
         }
-        <LoadMore />
       </Col>
     ) : (
       <div>
         <p>No proposals made yet! Click <Link to="/propose">here</Link> to make problem proposals.</p>
       </div>
     );
+    // <LoadMore />
   }
 }
 

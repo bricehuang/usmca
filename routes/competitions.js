@@ -150,15 +150,6 @@ router.get('/', (req, res) => {
   });
 });
 
-function id_in_user_list(id, users) {
-  for (let user of users) {
-    if (user._id == id) {
-      return true;
-    }
-  }
-  return false;
-}
-
 router.get('/lookup/:competition_id', auth.verifyJWT, (req, res) => {
   const competition_id = req.params.competition_id;
   Competition.findById(competition_id)
@@ -172,15 +163,19 @@ router.get('/lookup/:competition_id', auth.verifyJWT, (req, res) => {
       handler(false, 'Failed to load competition.', 503)(req, res);
     } else {
       const id = req.user._id.toString();
-      if (
-        // TODO this is hacky
-        id_in_user_list(id, competition.directors) ||
-        id_in_user_list(id, competition.czars) ||
-        id_in_user_list(id, competition.secure_members)
-        // competition.directors.indexOf(req.user._id.toString()) === -1 && // competition director
-        // competition.czars.indexOf(req.user._id.toString()) === -1 && // competition czar
-        // competition.secure_members.indexOf(req.user._id.toString()) === -1 // competition secure member
-      ) {
+      const authorized_ids = (
+        (competition.directors).concat(competition.czars).concat(competition.secure_members)
+        .map(user => user._id)
+      );
+      isAuthorized = (id, authorized_ids) => {
+        for (const authorized_id of authorized_ids) {
+          if (id == authorized_id) {
+            return true;
+          }
+        }
+        return false;
+      }
+      if (isAuthorized(id, authorized_ids)) {
         handler(true, 'Successfully loaded competition.', 200, { competition })(req, res);
       } else {
         handler(false, 'Unauthorized access to competition.', 401)(req, res);
