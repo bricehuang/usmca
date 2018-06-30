@@ -15,7 +15,7 @@ import {
   CompetitionsSelect,
   SubjectsInput
 } from "./utilities";
-import { FlameInput } from "../utilities";
+import { FlameInput, SUBJECTS } from "../utilities";
 import ControlledInput from "../react-materialize-custom/ControlledInput";
 
 const { SUCCESS, PENDING, SUBMITTED, IDLE, ERROR } = requestStatuses;
@@ -220,7 +220,6 @@ const mapStateToProps = state => ({
       });
 
 const Initialized = props => {
-  console.log(props.proposal);
   const Component = reduxForm({
     form: 'propose',
     initialValues: props.proposal ? {
@@ -228,7 +227,7 @@ const Initialized = props => {
       answer: props.proposal.answer,
       solution: (props.proposal.soln || {}).body,
       competition_id: (props.proposal.competition || {})._id,
-      subject: props.proposal.subject,
+      subject: SUBJECTS.indexOf(props.proposal.subject) >= 0 ? props.proposal.subject : 'Other',
       difficulty: props.proposal.difficulty || 0
     } : null
   })(ProposeForm);

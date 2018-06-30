@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import { ProblemPreview } from "../utilities";
 import { fetchCompetition, fetchDatabase } from "../../actions";
-import { HorizontalNav, VerticalNav } from "../utilities";
+import { HorizontalNav, VerticalNav, SUBJECTS } from "../utilities";
 import QueryDBForm from "../forms/query-db";
 
 const mapStateToProps = state => ({
@@ -73,7 +73,7 @@ class DatabasePage extends React.Component {
   }
 
   renderProblems(problems) {
-    return (
+    return problems.length > 0 ? (
       <Col s={12}>
         {
           problems.map((proposal, key) => (
@@ -83,10 +83,14 @@ class DatabasePage extends React.Component {
           )
         }
       </Col>
+    ) : (
+      <Col s={12}>
+        <div>No problems yet!</div>
+      </Col>
     );
   }
 
-  renderSubjects(problems, subjects, thisPageUrl) {
+  renderSubjects(problems, thisPageUrl) {
     let subjectTabs = {
       '_all': {
         title: () => <div><i aria-hidden="true"/> All </div>,
@@ -94,7 +98,7 @@ class DatabasePage extends React.Component {
         view: () => this.renderProblems(problems),
       },
     };
-    for (const subject of subjects) {
+    for (const subject of SUBJECTS) {
       subjectTabs[subject] = {
         title: () => <div><i aria-hidden="true"/> {subject} </div>,
         to: thisPageUrl,
@@ -108,7 +112,7 @@ class DatabasePage extends React.Component {
       to: thisPageUrl,
       view: () => this.renderProblems(problems.filter(
         problem => {
-          for (const subject of subjects) {
+          for (const subject of SUBJECTS) {
             if (problem.subject == subject) {
               return false;
             }
@@ -123,13 +127,11 @@ class DatabasePage extends React.Component {
   render() {
     const { match, competition, database } = this.props;
     const { content } = competition;
-    console.log('DATABASE');
-    console.log(this.props.database);
     const thisPageUrl = `/view-database/${match.params.id}`;
 
     const competitionLink = this.competitionLink(content);
     const subjectTabs = ( database.content && database.content.problems ) ? (
-      this.renderSubjects(database.content.problems, ['Algebra', 'Combinatorics'], thisPageUrl)
+      this.renderSubjects(database.content.problems, thisPageUrl)
     ) : <div />;
     // <QueryDBForm competition_id={ match.params.id } />
     // <Results />

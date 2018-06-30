@@ -546,6 +546,8 @@ const competitionMembership = (competition, userId, populated = true) => {
   else return NONMEMBER;
 }
 
+const SUBJECTS = ['Algebra', 'Combinatorics', 'Geometry', 'Number Theory'];
+
 export {
   Notification,
   RightButtonPanel,
@@ -566,4 +568,5 @@ export {
   NONMEMBER,
   competitionMembership,
   makeURL,
+  SUBJECTS,
 };

@@ -19,7 +19,7 @@ import AutocompleteSelect from "../react-materialize-custom/AutocompleteSelect";
 import DoubleAutocompleteSelect from "../react-materialize-custom/DoubleAutocompleteSelect";
 import ControlledInput from "../react-materialize-custom/ControlledInput";
 
-import { RightButtonPanel, FlameInput } from "../utilities";
+import { RightButtonPanel, FlameInput, SUBJECTS } from "../utilities";
 
 const { SUCCESS, ERROR, PENDING, SUBMITTED, IDLE } = requestStatuses;
 
@@ -195,21 +195,34 @@ const CompetitionsSelect = connect(
  * Subjects input.
  ******************************************************************************/
 
-const subjects = {
-  "Algebra": null,
-  "Combinatorics": null,
-  "Computer Science": null,
-  "Geometry": null,
-  "Number Theory": null,
-  "Other": null
-}
+// const subjects = {
+//   "Algebra": null,
+//   "Combinatorics": null,
+//   "Computer Science": null,
+//   "Geometry": null,
+//   "Number Theory": null,
+//   "Other": null
+// }
+
+// const SubjectsInput = props => {
+//   return (
+//     <Autocomplete
+//       s={12} title="Subject" { ...props }
+//       data={ subjects } limit={5} />
+//   );
+// }
 
 const SubjectsInput = props => {
   return (
-    <Autocomplete
-      s={12} title="Subject" { ...props }
-      data={ subjects } limit={5} />
-  );
+    <Input s={12} type="select" title="Subject" {...props} >
+      {
+        SUBJECTS.map(subject =>
+          <option key={subject} value={subject}>{subject}</option>
+        )
+      }
+      <option key='Other' value='Other'>Other</option>
+    </Input>
+  )
 }
 
 /*******************************************************************************
