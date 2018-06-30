@@ -208,7 +208,11 @@ class ProblemPreview extends React.Component  {
     return (
       <Row className="problem">
         <Col offset={ includeClipboard && "s2" } s={ includeClipboard ? 10 : 12 }>
-          <span className="small-stat">{ problem.upvotes.length } Upvotes &bull; { problem.alternate_soln.length } Solves</span>
+          <span className="small-stat">
+            { problem.upvotes.length } Upvotes &bull;
+            { problem.alternate_soln.length } Solves &bull;
+            Difficulty: { problem.difficulty ? problem.difficulty : 'Unrated' }
+          </span>
           { editable && (
               <ul className="problem-options">
                 <li><Link to={ `/edit-problem/${problem._id}` } className="grey-text"><i className="fa fa-pencil" aria-hidden="true" /></Link></li>
