@@ -11,77 +11,111 @@ import RequestTSForm from "../forms/request-test-solvers";
 import CreateTestForm from "../forms/create-test";
 
 class ContestPreviewDumb extends React.Component {
-  contestTabs = {
-    "tests": {
-      title: () => "Tests",
-      view: ({ data: { content } }) => {
-        if (!content) return <div />;
-        const contest = content;
-        return (
-          <div className="round-container">
-            <Modal trigger={<Button className="teal darken-3" waves="light">Create</Button>}>
-              <CreateTestForm contest_id={ contest._id } />
-            </Modal>
-            { (content.tests.length > 0) ? (
-                <Table>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Target Number of Problems</th>
-                      <th>Added Problems</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  {
-                    content.tests.map((test, key) => (
-                      <tr key={key}>
-                        <td><Link to={ `/view-test/${test._id}` } className="teal-text text-darken-3 underline-hover">{test.name}</Link></td>
-                        <td>{test.num_problems}</td>
-                        <td>{test.problems.length}</td>
-                      </tr>
-                    ))
-                  }
-                  </tbody>
-                </Table>
-              ) : ( <p>No tests created yet.</p> )
-            }
-          </div>
-        );
-      }
-    },
-    "test-solvers": {
-      title: () => "Test Solvers",
-      view: ({ data: { content } }) => {
-        if (!content) return <div />;
-        return (
-          <div className="round-container">
-            <Modal trigger={<Button className="teal darken-3" waves="light">Request</Button>}><RequestTSForm contest_id={ content._id } /></Modal>
+  // contestTabs = {
+  //   "tests": {
+  //     title: () => "Tests",
+  //     view: ({ data: { content } }) => {
+  //       if (!content) return <div />;
+  //       const contest = content;
+  //       return (
+  //         <div className="round-container">
+  //           <Modal trigger={<Button className="teal darken-3" waves="light">Create</Button>}>
+  //             <CreateTestForm contest_id={ contest._id } />
+  //           </Modal>
+  //           { (content.tests.length > 0) ? (
+  //               <Table>
+  //                 <thead>
+  //                   <tr>
+  //                     <th>Name</th>
+  //                     <th>Target Number of Problems</th>
+  //                     <th>Added Problems</th>
+  //                   </tr>
+  //                 </thead>
+  //                 <tbody>
+  //                 {
+  //                   content.tests.map((test, key) => (
+  //                     <tr key={key}>
+  //                       <td><Link to={ `/view-test/${test._id}` } className="teal-text text-darken-3 underline-hover">{test.name}</Link></td>
+  //                       <td>{test.num_problems}</td>
+  //                       <td>{test.problems.length}</td>
+  //                     </tr>
+  //                   ))
+  //                 }
+  //                 </tbody>
+  //               </Table>
+  //             ) : ( <p>No tests created yet.</p> )
+  //           }
+  //         </div>
+  //       );
+  //     }
+  //   },
+  //   "test-solvers": {
+  //     title: () => "Test Solvers",
+  //     view: ({ data: { content } }) => {
+  //       if (!content) return <div />;
+  //       return (
+  //         <div className="round-container">
+  //           <Modal trigger={<Button className="teal darken-3" waves="light">Request</Button>}><RequestTSForm contest_id={ content._id } /></Modal>
+  //           <Table>
+  //             <thead>
+  //               <tr>
+  //                 <th>Name</th>
+  //                 <th>Email</th>
+  //                 <th className="center-align">Remove</th>
+  //               </tr>
+  //             </thead>
+
+  //             <tbody>
+  //               {
+  //                 content.test_solvers.map((ts, key) => (
+  //                   <tr key={key}>
+  //                     <td>{ts.name}</td>
+  //                     <td>{ts.email}</td>
+  //                     <td className="center-align"><a className="black-text"><i className="fa fa-times" aria-hidden="true"></i></a></td>
+  //                   </tr>
+  //                 ))
+  //               }
+  //             </tbody>
+  //           </Table>
+  //         </div>
+  //       );
+  //     }
+  //   }
+  // };
+
+  renderContests(contest) {
+    if (!contest) return <div />;
+    return (
+      <div className="round-container">
+        <Modal trigger={<Button className="teal darken-3" waves="light">Create</Button>}>
+          <CreateTestForm contest_id={ contest._id } />
+        </Modal>
+        { (contest.tests.length > 0) ? (
             <Table>
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Email</th>
-                  <th className="center-align">Remove</th>
+                  <th>Target Number of Problems</th>
+                  <th>Added Problems</th>
                 </tr>
               </thead>
-
               <tbody>
-                {
-                  content.test_solvers.map((ts, key) => (
-                    <tr key={key}>
-                      <td>{ts.name}</td>
-                      <td>{ts.email}</td>
-                      <td className="center-align"><a className="black-text"><i className="fa fa-times" aria-hidden="true"></i></a></td>
-                    </tr>
-                  ))
-                }
+              {
+                contest.tests.map((test, key) => (
+                  <tr key={key}>
+                    <td><Link to={ `/view-test/${test._id}` } className="teal-text text-darken-3 underline-hover">{test.name}</Link></td>
+                    <td>{test.num_problems}</td>
+                    <td>{test.problems.length}</td>
+                  </tr>
+                ))
+              }
               </tbody>
             </Table>
-          </div>
-        );
-      }
-    }
-  };
+          ) : ( <p>No tests created yet.</p> )
+        }
+      </div>
+    );
+  }
 
   render() {
     const { data } = this.props,
@@ -96,11 +130,12 @@ class ContestPreviewDumb extends React.Component {
     // contest.competition._id if competition is object, contest.competition if competition is id
     const parentCompetitionId = contest.competition._id ? contest.competition._id : contest.competition;
     console.log(contest.competition);
+    // <VerticalNav tabs={ this.contestTabs } childProps={ childProps } active="tests" />
     return (
       <Col s={12}>
         <Link to={ `/view-competition/${contest.competition._id}` } className="waves-effect waves-light btn teal darken-3">Return to { contest.competition.short_name } Home</Link>
         <h2 className="teal-text text-darken-3">{contest.name}</h2>
-        <VerticalNav tabs={ this.contestTabs } childProps={ childProps } active="tests" />
+        { this.renderContests(contest) }
       </Col>
     );
   }

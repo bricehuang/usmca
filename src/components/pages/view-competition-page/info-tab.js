@@ -21,18 +21,14 @@ const competitionInfoDisplay = (competition) => {
         <li>Website: { (competition.website) ? <a href={ makeURL(competition.website) } className="teal-text text-darken-3 underline-hover">{ competition.website }</a> : "N/A"}</li>
         <li><h3>Membership Info</h3></li>
         <li>You are a: <span className="bold-text">{ permissionsDisplay[membership] }</span></li>
-        { membership === DIRECTOR &&  <li><a className="teal-text text-darken-3 underline-hover">Step down as director</a></li> }
+        { membership === DIRECTOR && <li><a className="teal-text text-darken-3 underline-hover">Step down as director</a></li> }
         <li><a className="teal-text text-darken-3 underline-hover">Leave competition</a></li>
-        {
-          (membership === DIRECTOR || membership === CZAR || membership === SECURE) && (
-            <div>
-              <li><h3>Propose Problem</h3></li>
-              <li><Link to={ `/propose/${competition._id}` } className="waves-effect waves-light btn teal darken-3">Propose Problem</Link></li>
-              <li><h3>Database</h3></li>
-              <li><Link to={ `/view-database/${competition._id}` } className="waves-effect waves-light btn teal darken-3">View database</Link></li>
-            </div>
-          )
-        }
+        <div>
+          <li><h3>Propose Problem</h3></li>
+          <li><Link to={ `/propose/${competition._id}` } className="waves-effect waves-light btn teal darken-3">Propose Problem</Link></li>
+          <li><h3>Database</h3></li>
+          <li><Link to={ `/view-database/${competition._id}` } className="waves-effect waves-light btn teal darken-3">View database</Link></li>
+        </div>
       </ul>
     </div>
   )

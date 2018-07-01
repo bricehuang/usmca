@@ -27,13 +27,13 @@ module.exports = {
   },
   permissionsEnum: {
     member: 'Member',
-    secure_member: 'Secure Member',
+    secure_member: 'Officer',
     czar: 'Czar',
     director: 'Director'
   },
   permissionsDisplay: {
     member: 'Member',
-    secure_member: 'Secure Member',
+    secure_member: 'Officer',
     czar: 'Czar',
     director: 'Director',
     pending_director: 'Pending Director',

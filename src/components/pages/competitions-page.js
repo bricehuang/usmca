@@ -12,7 +12,6 @@ import CreateContestForm from "../forms/create-contest";
 import CreateCompetitionForm from "../forms/create-competition";
 import JoinCompetitionForm from "../forms/join-competition";
 import * as Forms from "../forms";
-import { permissionsDisplay } from "../../../constants";
 import {
   DIRECTOR, PENDING_DIRECTOR, CZAR, SECURE, MEMBER, NONMEMBER, competitionMembership, makeURL
 } from "../utilities";
@@ -31,14 +30,10 @@ class CompetitionsPage extends React.Component {
           <li>Name: { competition.name }</li>
           <li>Short name: { competition.short_name }</li>
           <li>Website: { (competition.website) ? <a href={ makeURL(competition.website) } className="teal-text text-darken-3 underline-hover">{ competition.website }</a> : "N/A"}</li>
-          {
-            (membership === DIRECTOR || membership == CZAR || membership === SECURE) && (
-              <div>
-                <li><h3>Competition Portal</h3></li>
-                <li><Link to={ `/view-competition/${competition._id}` } className="waves-effect waves-light btn teal darken-3">Enter Competition</Link></li>
-              </div>
-            )
-          }
+          <div>
+            <li><h3>Competition Portal</h3></li>
+            <li><Link to={ `/view-competition/${competition._id}` } className="waves-effect waves-light btn teal darken-3">Enter Competition</Link></li>
+          </div>
         </ul>
       </div>
     )

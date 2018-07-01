@@ -8,7 +8,6 @@ import moment from "moment";
 import * as Forms from "../../forms";
 import CreateContestForm from "../../forms/create-contest";
 import auth from "../../../auth";
-import { permissionsDisplay } from "../../../../constants";
 
 import {
   DIRECTOR, PENDING_DIRECTOR, CZAR, SECURE, MEMBER, NONMEMBER, competitionMembership, makeURL

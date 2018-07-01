@@ -2,8 +2,7 @@ const router = require('express').Router(),
       _ = require('lodash'),
       auth = require('../config/auth'),
       handler = require('../utils/handler'),
-      security = require('../utils/security'),
-      { permissionsEnum } = require('../constants');
+      security = require('../utils/security');
 
 const User = require('../database/user'),
       Problem = require('../database/problem'),
