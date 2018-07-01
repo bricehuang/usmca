@@ -2,6 +2,7 @@ import * as React from "react";
 import { Row, Col, Button, Collapsible, CollapsibleItem, Input } from "react-materialize";
 import { connect } from "react-redux";
 import _ from "lodash"
+import { Link } from "react-router-dom";
 
 import auth from "../../auth";
 import renderKaTeX from "../../katex";
@@ -34,7 +35,6 @@ class Vote extends React.Component {
 class ViewProbPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showDiscussion: false };
   }
 
   problemTabs = () => {
@@ -79,28 +79,28 @@ class ViewProbPage extends React.Component {
           </div>
         )
       },
-      "test-solves": {
-        title: (problem) => <div>Test Solves<Counter count={ problem.alternate_soln.length } /></div>,
-        view: (problem) => (
-          <div>
-            <div>
-              <TestSolveForm problem_id={ problem._id }/>
-            </div>
-            {
-              (problem.alternate_soln.length > 0) ? (
-                <ul>
-                  {
-                    _(_.sortBy(problem.alternate_soln, "updated"))
-                    .reverse().value().map((soln, key) => (
-                      <Solution solution={soln} key={key} />
-                    ))
-                  }
-                </ul>
-              ) : ( <p>No test solves.</p> )
-            }
-         </div>
-        )
-      }
+      // "test-solves": {
+      //   title: (problem) => <div>Test Solves<Counter count={ problem.alternate_soln.length } /></div>,
+      //   view: (problem) => (
+      //     <div>
+      //       <div>
+      //         <TestSolveForm problem_id={ problem._id }/>
+      //       </div>
+      //       {
+      //         (problem.alternate_soln.length > 0) ? (
+      //           <ul>
+      //             {
+      //               _(_.sortBy(problem.alternate_soln, "updated"))
+      //               .reverse().value().map((soln, key) => (
+      //                 <Solution solution={soln} key={key} />
+      //               ))
+      //             }
+      //           </ul>
+      //         ) : ( <p>No test solves.</p> )
+      //       }
+      //    </div>
+      //   )
+      // }
     })
   }
 
@@ -109,10 +109,10 @@ class ViewProbPage extends React.Component {
     getProposal(match.params.id);
   }
 
-  toggleDiscussion = () => {
-    this.state.showDiscussion = !this.state.showDiscussion;
-    this.forceUpdate();
-  }
+  // toggleDiscussion = () => {
+  //   this.state.showDiscussion = !this.state.showDiscussion;
+  //   this.forceUpdate();
+  // }
 
   upvoted = () => {
     const { proposal: { content } } = this.props,
@@ -126,7 +126,7 @@ class ViewProbPage extends React.Component {
             upvoteProblem
           } = this.props,
           problem = content;
-
+    console.log(problem);
     const childProps = {
             "info": problem,
             "answer": problem,
@@ -138,6 +138,17 @@ class ViewProbPage extends React.Component {
             "test-solves": problem
           },
           upvotes = problem ? problem.upvotes : [];
+//          <a className="teal-text text-darken-3 underline-hover" onClick={ this.toggleDiscussion }>
+//            <h3><i className="fa fa-caret-up" aria-hidden="true"/> Hide Discussion</h3>
+//          </a>
+// : (
+//   <div className="toggle-discussion">
+//     <a className="teal-text text-darken-3 underline-hover" onClick={ this.toggleDiscussion }>
+//       <h3><i className="fa fa-caret-down" aria-hidden="true"/> Show Discussion</h3>
+//     </a>
+//   </div>
+// )
+
     return (
       <div>
       { (requestStatus === PENDING) && <Spinner /> }
@@ -147,32 +158,37 @@ class ViewProbPage extends React.Component {
             <div style={{marginTop: "36px"}}>
               <Error error={ requestStatus === ERROR } message={ message }/>
             </div>
+            <Link to={ `/view-competition/${problem.competition._id}` } className="waves-effect waves-light btn teal darken-3">Return to { problem.competition.short_name } Home</Link>
             <div style={{marginTop: "36px"}}>
-              <ExtendedProblemPreview
-                problem={ problem }
-                upvoted={ upvotes.indexOf(auth.userId()) > -1 }
-                onUpvote={ () => { upvoteProblem(problem._id); } } />
+              <div style={{borderTopStyle: "solid", borderTopWidth: "1px"}}>
+                <h3>Problem </h3>
+                <ExtendedProblemPreview
+                  problem={ problem }
+                  upvoted={ upvotes.indexOf(auth.userId()) > -1 }
+                  onUpvote={ () => { upvoteProblem(problem._id); } } />
+              </div>
+              <div style={{borderTopStyle: "solid", borderTopWidth: "1px"}}>
+                <h3>Answer </h3>
+                <p ref={ renderKaTeX }>{ problem.answer || 'No answer provided.' }</p>
+              </div>
+              <div style={{borderTopStyle: "solid", borderTopWidth: "1px"}}>
+                <h3>Solution </h3>
+                {
+                  problem.soln ? (
+                    <Solution solution={ problem.soln } />
+                  ): ( <p>No author solution.</p> )
+                }
+              </div>
             </div>
             <Col s={12}>
               {
-                this.state.showDiscussion ? (
-                  <div className="toggle-discussion">
-                    <a className="teal-text text-darken-3 underline-hover" onClick={ this.toggleDiscussion }>
-                      <h3><i className="fa fa-caret-up" aria-hidden="true"/> Hide Discussion</h3>
-                    </a>
-                    <HorizontalNav
-                      tabs={ this.problemTabs() }
-                      active="info"
-                      childProps={ childProps }
-                      headerProps={ headerProps }/>
-                  </div>
-                ) : (
-                  <div className="toggle-discussion">
-                    <a className="teal-text text-darken-3 underline-hover" onClick={ this.toggleDiscussion }>
-                      <h3><i className="fa fa-caret-down" aria-hidden="true"/> Show Discussion</h3>
-                    </a>
-                  </div>
-                )
+                <div className="discussion">
+                  <HorizontalNav
+                    tabs={ this.problemTabs() }
+                    active="info"
+                    childProps={ childProps }
+                    headerProps={ headerProps }/>
+                </div>
               }
             </Col>
           </Row>

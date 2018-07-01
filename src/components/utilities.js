@@ -356,10 +356,16 @@ const PublicizeButton = props => {
 class ExtendedProblemPreview extends React.Component  {
   render() {
     const { problem, onUpvote, upvoted } = this.props;
+    // <PublicizeButton user_id={ problem.author._id } problem_id={ problem._id } publicDatabase={ problem.publicDatabase } /><br />
+    // <span><div className="prob-btn unvoted"><i className="fa fa-clipboard" aria-hidden="true" /> <a className="underline-hover" ref={ clipboardRef } data-clipboard-text={ problem._id }>Copy ID</a></div></span><br />
     return (
       <Row className="problem">
         <Col s={12}>
-          <span className="small-stat">{ problem.upvotes.length } Upvotes &bull; { problem.alternate_soln.length } Solves</span>
+          <span className="small-stat">
+            { problem.upvotes.length } Upvotes &bull;
+            { problem.alternate_soln.length } Solves &bull;
+            Difficulty: { problem.difficulty ? problem.difficulty : 'Unrated' }
+          </span>
           <ul className="problem-options">
             <li><Link to={ `/edit-problem/${problem._id}` } className="grey-text"><i className="fa fa-pencil" aria-hidden="true" /></Link></li>
             <li><a className="grey-text"><i className="fa fa-trash" aria-hidden="true"/></a></li>
@@ -373,10 +379,14 @@ class ExtendedProblemPreview extends React.Component  {
           </div>
         </Col>
         <Col m={3} s={12} className="problem-stats">
-          <span className="bold-text">{ problem.author.name }</span> <PublicizeButton user_id={ problem.author._id } problem_id={ problem._id } publicDatabase={ problem.publicDatabase } /><br />
-          <span className="small-stat"><i>{ datify(problem.created, problem.updated) }</i></span><br /><br />
           <span style={{marginRight: "6px"}}><div className={"prob-btn " + (upvoted ? "upvoted" : "unvoted")} onClick={ onUpvote }><i className="fa fa-thumbs-up" aria-hidden="true" /><a className="underline-hover">Upvote{ upvoted && "d"}</a></div></span>
-          <span><div className="prob-btn unvoted"><i className="fa fa-clipboard" aria-hidden="true" /> <a className="underline-hover" ref={ clipboardRef } data-clipboard-text={ problem._id }>Copy ID</a></div></span><br />
+          <span>
+            <div className="prob-btn upvote unvoted">
+              <i className="fa fa-clipboard" aria-hidden="true" /> <a className="underline-hover" ref={ clipboardRef } data-clipboard-text={ problem.statement }>Copy TeX</a>
+            </div>
+          </span> <br />
+          <span className="small-stat">{ problem.author.name }</span><br />
+          <span className="small-stat"><i>{ datify(problem.created, problem.updated) }</i></span>
         </Col>
         <Col m={9} s={12} className="comments">
           <CommentList comments={problem.comments} problem_id={ problem._id } />
@@ -406,14 +416,14 @@ class Solution extends React.Component  {
           </div>
         </Col>
         <Col m={3} s={12} className="problem-stats">
-          <span><div className="prob-btn upvote unvoted"><i className="fa fa-thumbs-up" aria-hidden="true"></i><a className="underline-hover">Upvote</a></div></span><br />
-          <span className="bold-text">{ solution.author.name }</span><br />
-          <span className="small-stat"><i>{ datify(solution.created, solution.updated) }</i></span>
+          <span style={{marginRight: "6px"}}><div className="prob-btn upvote unvoted"><i className="fa fa-thumbs-up" aria-hidden="true"></i><a className="underline-hover">Upvote</a></div></span>
           <span>
             <div className="prob-btn upvote unvoted">
               <i className="fa fa-clipboard" aria-hidden="true" /> <a className="underline-hover" ref={ clipboardRef } data-clipboard-text={ solution.body }>Copy TeX</a>
             </div>
-          </span>
+          </span> <br />
+          <span className="small-stat">{ solution.author.name }</span><br />
+          <span className="small-stat"><i>{ datify(solution.created, solution.updated) }</i></span>
         </Col>
         <Col m={9} s={12} className="comments">
           <CommentList comments={solution.comments} solution_id={ solution._id } />
