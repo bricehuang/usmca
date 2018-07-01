@@ -14,6 +14,7 @@ const { REQUEST, ACCEPT, REJECT } = requestTypes;
 
 const User = require('../database/user'),
       Competition = require('../database/competition'),
+      Contest = require('../database/contest'),
       Request = require('../database/request'),
       Problem = require('../database/problem'),
       Notification = require('../database/notification');
@@ -153,7 +154,8 @@ router.get('/', (req, res) => {
 router.get('/lookup/:competition_id', auth.verifyJWT, (req, res) => {
   const competition_id = req.params.competition_id;
   Competition.findById(competition_id)
-  .populate('contests members secure_members czars directors')
+  .populate('members secure_members czars directors')
+  .populate({path: 'contests', model: 'Contest', populate: {path: 'tests', model: 'Test'}})
   .exec((err, competition) => {
     if (err) {
       console.log(err);

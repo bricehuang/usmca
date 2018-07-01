@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 import auth from "../../auth";
 import renderKaTeX from "../../katex";
-import { getProposal, upvoteProblem } from "../../actions";
+import { getProposal, upvoteProblem, getTestOfProposal } from "../../actions";
 import { requestStatuses } from "../../actions/types";
 import { ProblemPreview, ExtendedProblemPreview, Solution, HorizontalNav, Counter } from "../utilities";
 import TestSolveForm from "../forms/test-solve";
@@ -105,8 +105,9 @@ class ViewProbPage extends React.Component {
   }
 
   componentWillMount() {
-    const { match, getProposal } = this.props;
+    const { match, getProposal, getTestOfProposal } = this.props;
     getProposal(match.params.id);
+    getTestOfProposal(match.params.id);
   }
 
   // toggleDiscussion = () => {
@@ -122,11 +123,14 @@ class ViewProbPage extends React.Component {
 
   render() {
     const {
-            proposal: { content, requestStatus, message },
-            upvoteProblem
+            proposal,
+            testOfProposal,
+            upvoteProblem,
           } = this.props,
-          problem = content;
+          problem = proposal.content;
+    console.log(testOfProposal.content);
     console.log(problem);
+    console.log(this.props.competition.content);
     const childProps = {
             "info": problem,
             "answer": problem,
@@ -148,18 +152,26 @@ class ViewProbPage extends React.Component {
 //     </a>
 //   </div>
 // )
+// <Col s={12}>
+//   {
+//    <div className="discussion">
+//      <HorizontalNav
+//        tabs={ this.problemTabs() }
+//        active="info"
+//        childProps={ childProps }
+//        headerProps={ headerProps }/>
+//    </div>
+//  }
+//</Col>
 
     return (
       <div>
-      { (requestStatus === PENDING) && <Spinner /> }
+      { (proposal.requestStatus === PENDING) && <Spinner /> }
       {
         problem ? (
           <Row className="container">
             <div style={{marginTop: "36px"}}>
-              <Error error={ requestStatus === ERROR } message={ message }/>
-            </div>
-            <Link to={ `/view-competition/${problem.competition._id}` } className="waves-effect waves-light btn teal darken-3">Return to { problem.competition.short_name } Home</Link>
-            <div style={{marginTop: "36px"}}>
+              <Link to={ `/view-competition/${problem.competition._id}` } className="waves-effect waves-light btn teal darken-3">Return to { problem.competition.short_name } Home</Link><br /><br />
               <div style={{borderTopStyle: "solid", borderTopWidth: "1px"}}>
                 <h3>Problem </h3>
                 <ExtendedProblemPreview
@@ -176,26 +188,25 @@ class ViewProbPage extends React.Component {
                 {
                   problem.soln ? (
                     <Solution solution={ problem.soln } />
-                  ): ( <p>No author solution.</p> )
+                  ): ( <p>No solution.</p> )
                 }
               </div>
+              <div style={{borderTopStyle: "solid", borderTopWidth: "1px"}}>
+                <h3>Information </h3>
+                <ul>
+                  <li>Author: { problem.author.name }</li>
+                  <li>Subject: { problem.subject }</li>
+                  <li>Competition: { problem.publicDatabase ? <span className="bold-text">Public Database</span> : problem.competition.short_name }</li>
+                  <li>Difficulty: { problem.difficulty || 'N/A' }</li>
+                </ul>
+
+              </div>
             </div>
-            <Col s={12}>
-              {
-                <div className="discussion">
-                  <HorizontalNav
-                    tabs={ this.problemTabs() }
-                    active="info"
-                    childProps={ childProps }
-                    headerProps={ headerProps }/>
-                </div>
-              }
-            </Col>
           </Row>
         ) : (
           <Row className="container">
             <div style={{marginTop: "36px"}}>
-              <Error error={ requestStatus === ERROR } message={ message }/>
+              <Error error={ proposal.requestStatus === ERROR } message={ proposal.message }/>
             </div>
           </Row>
         )
@@ -206,11 +217,16 @@ class ViewProbPage extends React.Component {
 }
 
 const mapStateToProps = state => ({
-        proposal: state.problems.proposal
+        competition: state.competitions.competition,
+        proposal: state.problems.proposal,
+        testOfProposal: state.problems.testOfProposal,
       }),
       mapDispatchToProps = dispatch => ({
         getProposal: id => {
           getProposal(id)(dispatch);
+        },
+        getTestOfProposal: id => {
+          getTestOfProposal(id)(dispatch);
         },
         upvoteProblem: id => {
           upvoteProblem(id)(dispatch);

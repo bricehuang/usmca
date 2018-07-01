@@ -7,6 +7,7 @@ import {
   PROB_POST,
   PROB_PUT,
   PROB_GET,
+  PROB_GET_TEST,
   PROB_UPVOTE,
   PROB_COMMENT,
   PROB_DATABASE,
@@ -100,13 +101,27 @@ export function postProposal({
 export function getProposal(id) {
   return authAPIAction({
     type: PROB_GET,
-    url: `/api/problems/${id}`,
+    url: `/api/problems/get-prob/${id}`,
     opts: {
       method: 'get',
       headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
     },
     formatData: ({ success, message, problem }) => ({
       success, message, content: problem
+    })
+  });
+}
+
+export function getTestOfProposal(id) {
+  return authAPIAction({
+    type: PROB_GET_TEST,
+    url: `/api/problems/locate-test/${id}`,
+    opts: {
+      method: 'get',
+      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+    },
+    formatData: ({ success, message, test }) => ({
+      success, message, content: test
     })
   });
 }

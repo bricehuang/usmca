@@ -4,6 +4,7 @@ import {
   PROB_POST,
   PROB_PUT,
   PROB_GET,
+  PROB_GET_TEST,
   PROB_UPVOTE,
   PROB_DATABASE,
   PROB_PUBLIC_DATABASE,
@@ -21,6 +22,7 @@ const INITIAL_STATE = {
   putProposal: { requestStatus: IDLE, message: '' },
   myProposals: { content: [], requestStatus: IDLE, message: '' },
   proposal: { content: null, requestStatus: IDLE, message: '' },
+  testOfProposal: { content: null, requestStatus: IDLE, message: '' },
   database: { content: {}, requestStatus: IDLE, message: '' },
   publicDatabase: { content: [], requestStatus: IDLE, message: '' },
   publicizeData: { content: [], requestStatus: IDLE, message: '' }
@@ -34,34 +36,36 @@ export default function (state = INITIAL_STATE, { type, payload }) {
     case PROB_POST:
       return { ...state, postProposal: payload };
     case PROB_PUT:
-      return (requestStatus !== SUCCESS) ? 
+      return (requestStatus !== SUCCESS) ?
         { ...state, putProposal: payload } :
         { ...state, putProposal: payload, proposal: payload };
     case PROB_UPVOTE:
     case PROB_GET:
       return { ...state, proposal: payload };
+    case PROB_GET_TEST:
+      return { ...state, testOfproposal: payload };
     case PROB_SOLN_COMMENT:
     case PROB_TEST_SOLVE:
-      return (requestStatus !== SUCCESS) ? { 
+      return (requestStatus !== SUCCESS) ? {
         ...state,
         proposal: Object.assign({}, state.proposal, { requestStatus, message })
-      } : { 
-        ...state, 
+      } : {
+        ...state,
         proposal: {
-          requestStatus, 
-          message, 
+          requestStatus,
+          message,
           content: Object.assign({}, state.proposal.content, { alternate_soln: content })
         }
       };
     case PROB_PROB_COMMENT:
-      return (requestStatus !== SUCCESS) ? { 
+      return (requestStatus !== SUCCESS) ? {
         ...state,
         proposal: Object.assign({}, state.proposal, { requestStatus, message })
-      } : { 
-        ...state, 
+      } : {
+        ...state,
         proposal: {
-          requestStatus, 
-          message, 
+          requestStatus,
+          message,
           content: Object.assign({}, state.proposal.content, { comments: content  })
         }
       };
@@ -69,15 +73,15 @@ export default function (state = INITIAL_STATE, { type, payload }) {
       return { ...state, database: payload };
     case PROB_PUBLIC_DATABASE:
       return { ...state, publicDatabase: payload };
-    case PROB_TAKE: 
-      return (requestStatus !== SUCCESS) ? { 
+    case PROB_TAKE:
+      return (requestStatus !== SUCCESS) ? {
         ...state,
         publicDatabase: Object.assign({}, state.publicDatabase, { requestStatus, message })
-      } : { 
-        ...state, 
+      } : {
+        ...state,
         publicDatabase: {
-          requestStatus, 
-          message, 
+          requestStatus,
+          message,
           content: state.publicDatabase.content.filter(prob => prob._id !== content._id)
         }
       };

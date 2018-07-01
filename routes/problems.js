@@ -137,11 +137,31 @@ router.param('problem_id', (req, res, next, problem_id) => {
   });
 });
 
-router.get('/:problem_id', auth.verifyJWT, (req, res) => {
+router.get('/get-prob/:problem_id', auth.verifyJWT, (req, res) => {
   problemParam(req.params.problem_id, req, res, problem => {
     handler(true, 'Successfully loaded problem.', 200, { problem })(req, res);
   });
 });
+
+router.get('/locate-test/:problem_id', auth.verifyJWT, (req, res) => {
+  console.log(req.params.problem_id);
+  Test.findOne({ problems: req.params.problem_id }, (err, test) => {
+    if (err) {
+      handler(false, 'Failed to load test of problem.', 503)(req, res);
+    } else {
+      let testObj;
+      if (!test) {
+        testObj = null;
+      } else {
+        const { _id, name } = test;
+        testObj = { _id, name };
+      }
+      console.log(testObj);
+      console.log(test);
+      handler(true, 'Successfully loaded test of problem.', 200, { testObj })(req, res);
+    }
+  });
+})
 
 //@TODO handle other fields
 router.put('/:problem_id', auth.verifyJWT, (req, res) => {
