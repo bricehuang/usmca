@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 import auth from "../../auth";
 import renderKaTeX from "../../katex";
-import { getProposal, upvoteProblem } from "../../actions";
+import { getProposal, upvoteProblem, removeTestProb } from "../../actions";
 import { requestStatuses } from "../../actions/types";
 import { ProblemPreview, ExtendedProblemPreview, Solution, HorizontalNav, Counter } from "../utilities";
 import TestSolveForm from "../forms/test-solve";
@@ -66,11 +66,11 @@ const linkToProblemLocation = (problemLocation) => {
     return (
       <div>
         Usage: Test <a href={`./view-test/${problemLocation.test._id}`}>{problemLocation.test.name}</a> in
-        Contest <a href={`./view-contest/${problemLocation.contest._id}`}>{problemLocation.contest.name}</a>
+        Contest <a href={`./view-contest/${problemLocation.contest._id}`}>{problemLocation.contest.name}</a>.
       </div>
     )
   } else {
-    return <div>Usage: Currently not assigned to a test</div>
+    return (<div>Usage: Currently not assigned to a test.  </div>)
   }
 }
 
@@ -78,73 +78,6 @@ class ViewProbPage extends React.Component {
   constructor(props) {
     super(props);
   }
-
-  // problemTabs = () => {
-  //   return ({
-  //     "info": {
-  //       title: () => "Information",
-  //       view: (problem) => (
-  //         <ul>
-  //           <li>Author: { problem.author.name }</li>
-  //           <li>Subject: { problem.subject }</li>
-  //           <li>Competition: { problem.publicDatabase ? <span className="bold-text">Public Database</span> : problem.competition.short_name }</li>
-  //           <li>Difficulty: { problem.difficulty || 'N/A' }</li>
-  //         </ul>
-  //       )
-  //     },
-  //     "answer": {
-  //       title: () => "Answer",
-  //       view: (problem) => <p ref={ renderKaTeX }>{ problem.answer || 'No answer provided.' }</p>
-  //     },
-  //     "solutions": {
-  //       title: (problem) => <div>Solutions<Counter count={ problem.official_soln.length } /></div>,
-  //       view: (problem) => (
-  //         <div>
-  //           <h3>Author Solution</h3>
-  //           {
-  //             problem.soln ? (
-  //               <Solution solution={ problem.soln } />
-  //             ): ( <p>No author solution.</p> )
-  //           }
-  //           <h3>Other Accepted Solutions</h3>
-  //           {
-  //             problem.official_soln.length > 0 ? (
-  //             <ul>
-  //               {
-  //                 problem.official_soln.map((soln, key) => (
-  //                   <Solution solution={soln} key={key} />
-  //                 ))
-  //               }
-  //             </ul>
-  //             ) : ( <p>No other solutions.</p> )
-  //           }
-  //         </div>
-  //       )
-  //     },
-  //     "test-solves": {
-  //       title: (problem) => <div>Test Solves<Counter count={ problem.alternate_soln.length } /></div>,
-  //       view: (problem) => (
-  //         <div>
-  //           <div>
-  //             <TestSolveForm problem_id={ problem._id }/>
-  //           </div>
-  //           {
-  //             (problem.alternate_soln.length > 0) ? (
-  //               <ul>
-  //                 {
-  //                   _(_.sortBy(problem.alternate_soln, "updated"))
-  //                   .reverse().value().map((soln, key) => (
-  //                     <Solution solution={soln} key={key} />
-  //                   ))
-  //                 }
-  //               </ul>
-  //             ) : ( <p>No test solves.</p> )
-  //           }
-  //        </div>
-  //       )
-  //     }
-  //   })
-  // }
 
   componentWillMount() {
     const { match, getProposal } = this.props;
@@ -205,15 +138,30 @@ class ViewProbPage extends React.Component {
       return <Spinner />;
     } else if (problem) {
       const problemLocation = findProbIfInTest(problem._id, problem.competition.contests);
-      const assignProblem = !problemLocation ? (
-        <div>
-          <h3>Assign Problem</h3>
-          <AssignProblem
-          tests={getAllTests(problem.competition.contests)}
-          prob={problem._id}
-          />
-        </div>
-      ) : (<div />)
+      let assignOrRemoveProblem;
+      if (!problemLocation) {
+        assignOrRemoveProblem = (
+          <div>
+            <h3>Assign Problem</h3>
+            <AssignProblem
+            tests={getAllTests(problem.competition.contests)}
+            prob={problem._id}
+            />
+          </div>
+        )
+      } else {
+        const returnProblem = (test_id, problem_id) => {
+          this.props.removeTestProb(test_id, problem_id);
+          window.location.reload();
+        }
+        assignOrRemoveProblem = (
+          <div>
+            <a onClick={() => returnProblem(problemLocation.test._id, problem._id)}>
+            Return problem to database.
+            </a>
+          </div>
+        )
+      }
 
       return (
         <Row className="container">
@@ -246,7 +194,7 @@ class ViewProbPage extends React.Component {
                 <li>Difficulty: { problem.difficulty || 'N/A' }</li>
                 <li>{linkToProblemLocation(problemLocation)} </li>
               </ul>
-              {assignProblem}
+              {assignOrRemoveProblem}
             </div>
           </div>
         </Row>
@@ -272,7 +220,10 @@ const mapStateToProps = state => ({
         },
         upvoteProblem: id => {
           upvoteProblem(id)(dispatch);
-        }
+        },
+        removeTestProb: (test_id, problem_id) => {
+          removeTestProb(test_id, problem_id)(dispatch);
+        },
       });
 
 export default connect(
