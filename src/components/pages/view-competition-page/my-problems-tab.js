@@ -32,7 +32,11 @@ class MyProblemsTab extends React.Component {
       </Col>
     ) : (
       <div>
-        <p>No proposals made yet! Click <Link to="/propose">here</Link> to make problem proposals.</p>
+        <p>
+          No proposals made yet! Click
+          <Link to={`/propose/${this.props.competition.content._id}`}>here</Link>
+          to make problem proposals.
+        </p>
       </div>
     );
     // <LoadMore />
