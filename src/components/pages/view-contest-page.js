@@ -129,7 +129,6 @@ class ContestPreviewDumb extends React.Component {
           };
     // contest.competition._id if competition is object, contest.competition if competition is id
     const parentCompetitionId = contest.competition._id ? contest.competition._id : contest.competition;
-    console.log(contest.competition);
     // <VerticalNav tabs={ this.contestTabs } childProps={ childProps } active="tests" />
     return (
       <Col s={12}>

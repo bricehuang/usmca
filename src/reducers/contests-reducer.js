@@ -55,7 +55,6 @@ export default function (state = INITIAL_STATE, { type, payload }) {
         test: Object.assign({}, state.test, { requestStatus, message }),
         addTestProb: { requestStatus, message }
       };
-      // if (requestStatus === SUCCESS) newState.test.content.problems.push(problem);
       return newState;
     case CONTEST_RM_PROB:
       return { ...state, removeTestProb: payload };

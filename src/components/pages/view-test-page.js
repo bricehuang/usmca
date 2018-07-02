@@ -105,9 +105,6 @@ class TestProblems extends React.Component {
 
     return <div>
       <SortableProblemList problems={problems} removeElem={this.removeElem} onSortEnd={this.onSortEnd} useDragHandle={true} />
-      <Modal header='Add Problem' trigger={<a className="teal-text text-darken-3"><i className="fa fa-plus" aria-hidden="true"></i></a>}>
-        <AddProblemForm test_id={ test._id } />
-      </Modal>
     </div>;
   }
 }
