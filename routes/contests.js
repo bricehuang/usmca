@@ -159,23 +159,29 @@ router.post('/:contest_id/tests', auth.verifyJWT, (req, res) => {
   Contest.findById(contest_id)
   .populate('competition', 'czars directors')
   .exec((err, contest) => {
+    console.log('made it here 1');
     if (err) handler(false, 'Failed to load contest.', 503)(req, res);
     else if (!contest) handler(false, 'Contest does not exist.', 400)(req, res);
     else {
       /* check if user is czar (or director) */
+      console.log('made it here 2');
       if (contest.competition.czars.indexOf(req.user._id.toString()) === -1 &&
           contest.competition.directors.indexOf(req.user._id.toString()) === -1) {
         handler(false, 'User does not have czar privileges.', 401)(req, res);
       } else {
+        console.log('made it here 3');
         const test = Object.assign(new Test(), {
           name, num_problems, contest
         });
         test.save(err => {
+          console.log('made it here 4');
           console.log(err);
           if (err) handler(false, 'Failed to save test.', 503)(req, res);
           else {
+            console.log('made it here 5');
             contest.tests.push(test);
             contest.save(err => {
+              console.log('made it here 6');
               if (err) handler(false, 'Failed to save test to contest.', 503)(req, res);
               else handler(true, 'Succesfully created test.', 200, { test })(req, res);
             });
