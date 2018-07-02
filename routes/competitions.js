@@ -166,7 +166,7 @@ router.get('/lookup/:competition_id', auth.verifyJWT, (req, res) => {
     } else {
       const id = req.user._id.toString();
       const authorized_ids = (
-        (competition.directors).concat(competition.czars).concat(competition.secure_members)
+        (competition.directors).concat(competition.czars).concat(competition.secure_members).concat(competition.members)
         .map(user => user._id)
       );
       isAuthorized = (id, authorized_ids) => {
@@ -372,7 +372,7 @@ router.get('/database', auth.verifyJWT, (req, res) => {
         else {
           query.subject = {
             //@TODO make this non hard coded
-            $nin: ['Algebra', 'Combinatorics', 'Computer Science', 'Geometry', 'Number Theory']
+            $nin: ['Algebra', 'Combinatorics', 'Geometry', 'Number Theory']
           };
         }
       }
