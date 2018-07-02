@@ -19,7 +19,18 @@ const User = require('../database/user'),
 const problemParam = (problem_id, req, res, callback)  => {
   Problem.findById(problem_id)
   .populate('author', 'name _id')
-  .populate('competition', 'short_name _id directors czars secure_members')
+  .populate({
+    path: 'competition',
+    model: 'Competition',
+    populate: {
+      path: 'contests',
+      model: 'Contest',
+      populate: {
+        path: 'tests',
+        model: 'Test',
+      }
+    }
+  })
   .populate('soln', 'author body created updated comments upvotes')
   .populate('official_soln', 'author body created updated comments upvotes')
   .populate('alternate_soln', 'author body created updated comments upvotes')
@@ -142,26 +153,6 @@ router.get('/get-prob/:problem_id', auth.verifyJWT, (req, res) => {
     handler(true, 'Successfully loaded problem.', 200, { problem })(req, res);
   });
 });
-
-router.get('/locate-test/:problem_id', auth.verifyJWT, (req, res) => {
-  console.log(req.params.problem_id);
-  Test.findOne({ problems: req.params.problem_id }, (err, test) => {
-    if (err) {
-      handler(false, 'Failed to load test of problem.', 503)(req, res);
-    } else {
-      let testObj;
-      if (!test) {
-        testObj = null;
-      } else {
-        const { _id, name } = test;
-        testObj = { _id, name };
-      }
-      console.log(testObj);
-      console.log(test);
-      handler(true, 'Successfully loaded test of problem.', 200, { testObj })(req, res);
-    }
-  });
-})
 
 //@TODO handle other fields
 router.put('/:problem_id', auth.verifyJWT, (req, res) => {

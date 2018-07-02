@@ -4,7 +4,6 @@ import {
   PROB_POST,
   PROB_PUT,
   PROB_GET,
-  PROB_GET_TEST,
   PROB_UPVOTE,
   PROB_DATABASE,
   PROB_PUBLIC_DATABASE,
@@ -22,7 +21,6 @@ const INITIAL_STATE = {
   putProposal: { requestStatus: IDLE, message: '' },
   myProposals: { content: [], requestStatus: IDLE, message: '' },
   proposal: { content: null, requestStatus: IDLE, message: '' },
-  testOfProposal: { content: null, requestStatus: IDLE, message: '' },
   database: { content: {}, requestStatus: IDLE, message: '' },
   publicDatabase: { content: [], requestStatus: IDLE, message: '' },
   publicizeData: { content: [], requestStatus: IDLE, message: '' }
@@ -42,8 +40,6 @@ export default function (state = INITIAL_STATE, { type, payload }) {
     case PROB_UPVOTE:
     case PROB_GET:
       return { ...state, proposal: payload };
-    case PROB_GET_TEST:
-      return { ...state, testOfproposal: payload };
     case PROB_SOLN_COMMENT:
     case PROB_TEST_SOLVE:
       return (requestStatus !== SUCCESS) ? {

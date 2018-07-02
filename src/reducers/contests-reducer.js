@@ -1,4 +1,4 @@
-import { 
+import {
   CONTEST_POST,
   CONTEST_GET,
   CONTEST_TEST_POST,
@@ -12,7 +12,7 @@ import {
 } from '../actions/types';
 
 const { SUCCESS, PENDING, SUBMITTED, IDLE, ERROR } = requestStatuses;
-const INITIAL_STATE = { 
+const INITIAL_STATE = {
   createContest: { content: null, message: '', requestStatus: IDLE },
   contest: { content: null, message: '', requestStatus: IDLE },
   postTestData: { requestStatus: IDLE, message: '' },
@@ -33,7 +33,7 @@ export default function (state = INITIAL_STATE, { type, payload }) {
       return { ...state, contest: payload };
     case CONTEST_TEST_POST:
       const test = content;
-      return { 
+      return {
         ...state,
         postTestData: { requestStatus, message },
         contest: {
@@ -50,12 +50,12 @@ export default function (state = INITIAL_STATE, { type, payload }) {
       return { ...state, test: payload };
     case CONTEST_TEST_PROB:
       const problem = content;
-      let newState = { 
-        ...state, 
+      let newState = {
+        ...state,
         test: Object.assign({}, state.test, { requestStatus, message }),
         addTestProb: { requestStatus, message }
       };
-      if (requestStatus === SUCCESS) newState.test.content.problems.push(problem);
+      // if (requestStatus === SUCCESS) newState.test.content.problems.push(problem);
       return newState;
     case CONTEST_RM_PROB:
       return { ...state, removeTestProb: payload };

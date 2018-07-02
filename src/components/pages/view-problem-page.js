@@ -6,12 +6,13 @@ import { Link } from "react-router-dom";
 
 import auth from "../../auth";
 import renderKaTeX from "../../katex";
-import { getProposal, upvoteProblem, getTestOfProposal } from "../../actions";
+import { getProposal, upvoteProblem } from "../../actions";
 import { requestStatuses } from "../../actions/types";
 import { ProblemPreview, ExtendedProblemPreview, Solution, HorizontalNav, Counter } from "../utilities";
 import TestSolveForm from "../forms/test-solve";
 import SolutionForm from "../forms/solution";
 import CommentForm from "../forms/comment";
+import AssignProblem from "../forms/assign-problem";
 import Spinner from "../spinner";
 import Error from "../error";
 const { SUCCESS, PENDING, SUBMITTED, ERROR, IDLE } = requestStatuses;
@@ -32,82 +33,122 @@ class Vote extends React.Component {
   }
 }
 
+const getAllTests = (contests) => {
+  let tests = [];
+  for (const contest of contests) {
+    for (const test of contest.tests) {
+      tests.push({contest: contest.name, test: test.name, _id: test._id});
+    }
+  }
+  tests.reverse();
+  return tests;
+}
+
+const findProbIfInTest = (searchProblemId, contests) => {
+  for (const contest of contests) {
+    for (const test of contest.tests) {
+      for (const problem of test.problems) {
+        const probId = problem._id ? problem._id : problem;
+        if (probId == searchProblemId) {
+          return {
+            contest: {_id: contest._id, name: contest.name},
+            test: {_id: test._id, name: test.name}
+          }
+        }
+      }
+    }
+  }
+  return null;
+}
+
+const linkToProblemLocation = (problemLocation) => {
+  if (problemLocation) {
+    return (
+      <div>
+        Usage: Test <a href={`./view-test/${problemLocation.test._id}`}>{problemLocation.test.name}</a> in
+        Contest <a href={`./view-contest/${problemLocation.contest._id}`}>{problemLocation.contest.name}</a>
+      </div>
+    )
+  } else {
+    return <div>Usage: Currently not assigned to a test</div>
+  }
+}
+
 class ViewProbPage extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  problemTabs = () => {
-    return ({
-      "info": {
-        title: () => "Information",
-        view: (problem) => (
-          <ul>
-            <li>Author: { problem.author.name }</li>
-            <li>Subject: { problem.subject }</li>
-            <li>Competition: { problem.publicDatabase ? <span className="bold-text">Public Database</span> : problem.competition.short_name }</li>
-            <li>Difficulty: { problem.difficulty || 'N/A' }</li>
-          </ul>
-        )
-      },
-      "answer": {
-        title: () => "Answer",
-        view: (problem) => <p ref={ renderKaTeX }>{ problem.answer || 'No answer provided.' }</p>
-      },
-      "solutions": {
-        title: (problem) => <div>Solutions<Counter count={ problem.official_soln.length } /></div>,
-        view: (problem) => (
-          <div>
-            <h3>Author Solution</h3>
-            {
-              problem.soln ? (
-                <Solution solution={ problem.soln } />
-              ): ( <p>No author solution.</p> )
-            }
-            <h3>Other Accepted Solutions</h3>
-            {
-              problem.official_soln.length > 0 ? (
-              <ul>
-                {
-                  problem.official_soln.map((soln, key) => (
-                    <Solution solution={soln} key={key} />
-                  ))
-                }
-              </ul>
-              ) : ( <p>No other solutions.</p> )
-            }
-          </div>
-        )
-      },
-      // "test-solves": {
-      //   title: (problem) => <div>Test Solves<Counter count={ problem.alternate_soln.length } /></div>,
-      //   view: (problem) => (
-      //     <div>
-      //       <div>
-      //         <TestSolveForm problem_id={ problem._id }/>
-      //       </div>
-      //       {
-      //         (problem.alternate_soln.length > 0) ? (
-      //           <ul>
-      //             {
-      //               _(_.sortBy(problem.alternate_soln, "updated"))
-      //               .reverse().value().map((soln, key) => (
-      //                 <Solution solution={soln} key={key} />
-      //               ))
-      //             }
-      //           </ul>
-      //         ) : ( <p>No test solves.</p> )
-      //       }
-      //    </div>
-      //   )
-      // }
-    })
-  }
+  // problemTabs = () => {
+  //   return ({
+  //     "info": {
+  //       title: () => "Information",
+  //       view: (problem) => (
+  //         <ul>
+  //           <li>Author: { problem.author.name }</li>
+  //           <li>Subject: { problem.subject }</li>
+  //           <li>Competition: { problem.publicDatabase ? <span className="bold-text">Public Database</span> : problem.competition.short_name }</li>
+  //           <li>Difficulty: { problem.difficulty || 'N/A' }</li>
+  //         </ul>
+  //       )
+  //     },
+  //     "answer": {
+  //       title: () => "Answer",
+  //       view: (problem) => <p ref={ renderKaTeX }>{ problem.answer || 'No answer provided.' }</p>
+  //     },
+  //     "solutions": {
+  //       title: (problem) => <div>Solutions<Counter count={ problem.official_soln.length } /></div>,
+  //       view: (problem) => (
+  //         <div>
+  //           <h3>Author Solution</h3>
+  //           {
+  //             problem.soln ? (
+  //               <Solution solution={ problem.soln } />
+  //             ): ( <p>No author solution.</p> )
+  //           }
+  //           <h3>Other Accepted Solutions</h3>
+  //           {
+  //             problem.official_soln.length > 0 ? (
+  //             <ul>
+  //               {
+  //                 problem.official_soln.map((soln, key) => (
+  //                   <Solution solution={soln} key={key} />
+  //                 ))
+  //               }
+  //             </ul>
+  //             ) : ( <p>No other solutions.</p> )
+  //           }
+  //         </div>
+  //       )
+  //     },
+  //     "test-solves": {
+  //       title: (problem) => <div>Test Solves<Counter count={ problem.alternate_soln.length } /></div>,
+  //       view: (problem) => (
+  //         <div>
+  //           <div>
+  //             <TestSolveForm problem_id={ problem._id }/>
+  //           </div>
+  //           {
+  //             (problem.alternate_soln.length > 0) ? (
+  //               <ul>
+  //                 {
+  //                   _(_.sortBy(problem.alternate_soln, "updated"))
+  //                   .reverse().value().map((soln, key) => (
+  //                     <Solution solution={soln} key={key} />
+  //                   ))
+  //                 }
+  //               </ul>
+  //             ) : ( <p>No test solves.</p> )
+  //           }
+  //        </div>
+  //       )
+  //     }
+  //   })
+  // }
 
   componentWillMount() {
-    const { match, getProposal, getTestOfProposal } = this.props;
+    const { match, getProposal } = this.props;
     getProposal(match.params.id);
-    getTestOfProposal(match.params.id);
   }
 
   // toggleDiscussion = () => {
@@ -124,13 +165,9 @@ class ViewProbPage extends React.Component {
   render() {
     const {
             proposal,
-            testOfProposal,
             upvoteProblem,
           } = this.props,
           problem = proposal.content;
-    console.log(testOfProposal.content);
-    console.log(problem);
-    console.log(this.props.competition.content);
     const childProps = {
             "info": problem,
             "answer": problem,
@@ -164,69 +201,74 @@ class ViewProbPage extends React.Component {
 //  }
 //</Col>
 
-    return (
-      <div>
-      { (proposal.requestStatus === PENDING) && <Spinner /> }
-      {
-        problem ? (
-          <Row className="container">
-            <div style={{marginTop: "36px"}}>
-              <Link to={ `/view-competition/${problem.competition._id}` } className="waves-effect waves-light btn teal darken-3">Return to { problem.competition.short_name } Home</Link><br /><br />
-              <div style={{borderTopStyle: "solid", borderTopWidth: "1px"}}>
-                <h3>Problem </h3>
-                <ExtendedProblemPreview
-                  problem={ problem }
-                  upvoted={ upvotes.indexOf(auth.userId()) > -1 }
-                  onUpvote={ () => { upvoteProblem(problem._id); } } />
-              </div>
-              <div style={{borderTopStyle: "solid", borderTopWidth: "1px"}}>
-                <h3>Answer </h3>
-                <p ref={ renderKaTeX }>{ problem.answer || 'No answer provided.' }</p>
-              </div>
-              <div style={{borderTopStyle: "solid", borderTopWidth: "1px"}}>
-                <h3>Solution </h3>
-                {
-                  problem.soln ? (
-                    <Solution solution={ problem.soln } />
-                  ): ( <p>No solution.</p> )
-                }
-              </div>
-              <div style={{borderTopStyle: "solid", borderTopWidth: "1px"}}>
-                <h3>Information </h3>
-                <ul>
-                  <li>Author: { problem.author.name }</li>
-                  <li>Subject: { problem.subject }</li>
-                  <li>Competition: { problem.publicDatabase ? <span className="bold-text">Public Database</span> : problem.competition.short_name }</li>
-                  <li>Difficulty: { problem.difficulty || 'N/A' }</li>
-                </ul>
+    if (proposal.requestStatus === PENDING) {
+      return <Spinner />;
+    } else if (problem) {
+      const problemLocation = findProbIfInTest(problem._id, problem.competition.contests);
+      const assignProblem = !problemLocation ? (
+        <div>
+          <h3>Assign Problem</h3>
+          <AssignProblem
+          tests={getAllTests(problem.competition.contests)}
+          prob={problem._id}
+          />
+        </div>
+      ) : (<div />)
 
-              </div>
+      return (
+        <Row className="container">
+          <div style={{marginTop: "36px"}}>
+            <Link to={ `/view-database/${problem.competition._id}` } className="waves-effect waves-light btn teal darken-3">Return to { problem.competition.short_name } Database</Link><br /><br />
+            <div style={{borderTopStyle: "solid", borderTopWidth: "1px"}}>
+              <h3>Problem </h3>
+              <ExtendedProblemPreview
+                problem={ problem }
+                upvoted={ upvotes.indexOf(auth.userId()) > -1 }
+                onUpvote={ () => { upvoteProblem(problem._id); } } />
             </div>
-          </Row>
-        ) : (
-          <Row className="container">
-            <div style={{marginTop: "36px"}}>
-              <Error error={ proposal.requestStatus === ERROR } message={ proposal.message }/>
+            <div style={{borderTopStyle: "solid", borderTopWidth: "1px"}}>
+              <h3>Answer </h3>
+              <p ref={ renderKaTeX }>{ problem.answer || 'No answer provided.' }</p>
             </div>
-          </Row>
-        )
-      }
-      </div>
-    )
+            <div style={{borderTopStyle: "solid", borderTopWidth: "1px"}}>
+              <h3>Solution </h3>
+              {
+                problem.soln ? (
+                  <Solution solution={ problem.soln } />
+                ): ( <p>No solution.</p> )
+              }
+            </div>
+            <div style={{borderTopStyle: "solid", borderTopWidth: "1px"}}>
+              <h3>Information </h3>
+              <ul>
+                <li>Author: { problem.author.name }</li>
+                <li>Subject: { problem.subject }</li>
+                <li>Difficulty: { problem.difficulty || 'N/A' }</li>
+                <li>{linkToProblemLocation(problemLocation)} </li>
+              </ul>
+              {assignProblem}
+            </div>
+          </div>
+        </Row>
+      )
+    } else {
+      return (
+        <Row className="container">
+          <div style={{marginTop: "36px"}}>
+            <Error error={ proposal.requestStatus === ERROR } message={ proposal.message }/>
+          </div>
+        </Row>
+      )
+    }
   }
 }
 
 const mapStateToProps = state => ({
-        competition: state.competitions.competition,
         proposal: state.problems.proposal,
-        testOfProposal: state.problems.testOfProposal,
       }),
       mapDispatchToProps = dispatch => ({
         getProposal: id => {
           getProposal(id)(dispatch);
-        },
-        getTestOfProposal: id => {
-          getTestOfProposal(id)(dispatch);
         },
         upvoteProblem: id => {
           upvoteProblem(id)(dispatch);

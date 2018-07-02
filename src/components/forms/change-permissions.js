@@ -9,9 +9,9 @@ import Input from "../react-materialize-custom/ControlledInput";
 import { RightButtonPanel } from "../utilities";
 import { permissionsEnum } from "../../../constants";
 import { changePermissions } from "../../actions";
-import { 
-  USER_CHANGE_PERM, 
-  requestStatuses, 
+import {
+  USER_CHANGE_PERM,
+  requestStatuses,
   requestPayloads
 } from "../../actions/types";
 
@@ -41,7 +41,7 @@ class ChangePermissions extends React.Component {
   }
 
   render() {
-    const { 
+    const {
       handleSubmit,
       changePermData: { requestStatus, message, content }, // content is user_id
       user_id,
@@ -71,7 +71,7 @@ const mapStateToProps = state => ({
         },
         resetForm: () => {
           dispatch(Object.assign(
-            { type: USER_CHANGE_PERM }, 
+            { type: USER_CHANGE_PERM },
             requestPayloads.idlePayload()
           ));
         }
