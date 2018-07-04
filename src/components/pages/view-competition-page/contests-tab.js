@@ -15,11 +15,11 @@ import {
 
 const contestsDisplay = (competition) => {
   const membership = competitionMembership(competition, auth.userId());
+  // <a className="right black-text"><i className="fa fa-times" aria-hidden="true" /></a>
   const contestView = (contest, idx) => (
     <div style={{borderBottom: "1px solid #cfd8dc"}} key={idx}>
       <h3>
         <Link to={ `/view-contest/${contest._id}` } className="teal-text text-darken-3 underline-hover">{ contest.name }</Link>
-        <a className="right black-text"><i className="fa fa-times" aria-hidden="true" /></a>
         <Modal header="Update Contest" trigger={<a className="right right-space black-text"><i className="fa fa-pencil" aria-hidden="true" /></a>}><Forms.CreateContest contest={ contest } competition_id={ competition._id } /></Modal>
       </h3>
       <ul>
