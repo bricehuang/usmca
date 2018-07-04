@@ -31,7 +31,7 @@ const contestsDisplay = (competition) => {
   );
   return (
     <div className="round-container">
-      { (membership === DIRECTOR) &&
+      { (membership === DIRECTOR || membership === CZAR) &&
         <Modal header="Create Contest" trigger={ <Button className="teal darken-3" waves="light">Create contest</Button> }>
           <CreateContestForm competition_id={ competition._id } />
         </Modal>

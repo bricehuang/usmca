@@ -28,8 +28,8 @@ router.post('/', auth.verifyJWT, (req, res) => {
     } else if (!competition) {
       handler(false, 'The associated competition does not exist.', 503)(req, res);
     } else {
-      if (competition.directors.indexOf(req.user._id) === -1) {
-        return handler(false, 'User is not a director of the competition.', 401)(req, res);
+      if (competition.directors.indexOf(req.user._id) === -1 && competition.czars.indexOf(req.user._id) === -1) {
+        return handler(false, 'User is not a director or czar of the competition.', 401)(req, res);
       } else {
         const contest = Object.assign(new Contest(), {
           competition: competition._id,
