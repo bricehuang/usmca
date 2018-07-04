@@ -25,7 +25,7 @@ class MyProblemsTab extends React.Component {
         {
           content.map((proposal, key) => (
             <div style={{borderBottom: "1px solid #cfd8dc", paddingTop: "12px"}} key={key}>
-              <ProblemPreview problem={proposal} includeClipboard={true} editable={true} />
+              <ProblemPreview problem={proposal} includeClipboard={false} editable={true} />
             </div>
           ))
         }

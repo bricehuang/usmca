@@ -146,10 +146,10 @@ const Comment = ({ comment }) => (
   &mdash; <span className="comment-author">
     <span className="author-name">{ comment.author.name }</span>
     <i>{ datify(comment.created, comment.updated) }</i>
-    <a><i className="fa fa-pencil" aria-hidden="true"></i></a>
-    <a><i className="fa fa-trash" aria-hidden="true"></i></a>
   </span></li>
 )
+    // <a><i className="fa fa-pencil" aria-hidden="true"></i></a>
+    // <a><i className="fa fa-trash" aria-hidden="true"></i></a>
 
 class CommentList extends React.Component {
   constructor(props) {
@@ -205,12 +205,12 @@ class CommentList extends React.Component {
 class ProblemPreview extends React.Component  {
   render() {
     const { problem, publicDatabase, includeClipboard, editable } = this.props;
+            // { problem.alternate_soln.length } Solves &bull;
     return (
       <Row className="problem">
         <Col offset={ includeClipboard && "s2" } s={ includeClipboard ? 10 : 12 }>
           <span className="small-stat">
             { problem.upvotes.length } Upvotes &bull;
-            { problem.alternate_soln.length } Solves &bull;
             Difficulty: { problem.difficulty ? problem.difficulty : 'Unrated' }
           </span>
           { editable && (
@@ -358,12 +358,12 @@ class ExtendedProblemPreview extends React.Component  {
     const { problem, onUpvote, upvoted } = this.props;
     // <PublicizeButton user_id={ problem.author._id } problem_id={ problem._id } publicDatabase={ problem.publicDatabase } /><br />
     // <span><div className="prob-btn unvoted"><i className="fa fa-clipboard" aria-hidden="true" /> <a className="underline-hover" ref={ clipboardRef } data-clipboard-text={ problem._id }>Copy ID</a></div></span><br />
+            // { problem.alternate_soln.length } Solves &bull;
     return (
       <Row className="problem">
         <Col s={12}>
           <span className="small-stat">
             { problem.upvotes.length } Upvotes &bull;
-            { problem.alternate_soln.length } Solves &bull;
             Difficulty: { problem.difficulty ? problem.difficulty : 'Unrated' }
           </span>
           <ul className="problem-options">
@@ -399,14 +399,14 @@ class ExtendedProblemPreview extends React.Component  {
 class Solution extends React.Component  {
   render() {
     const { solution } = this.props;
+          // <ul className="problem-options">
+            // <li><a className="grey-text"><i className="fa fa-pencil" aria-hidden="true"></i></a></li>
+            // <li><a className="grey-text"><i className="fa fa-trash" aria-hidden="true"></i></a></li>
+          // </ul>
     return solution ? (
       <Row className="problem">
         <Col s={12}>
           <span className="small-stat">{ solution.upvotes.length } Upvotes</span>
-          <ul className="problem-options">
-            <li><a className="grey-text"><i className="fa fa-pencil" aria-hidden="true"></i></a></li>
-            <li><a className="grey-text"><i className="fa fa-trash" aria-hidden="true"></i></a></li>
-          </ul>
         </Col>
         <Col s={12}>
           <div className="katex-preview">
