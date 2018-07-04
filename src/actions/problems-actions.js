@@ -282,8 +282,8 @@ export function solnComment(solution_id, body) {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     },
-    formatData: ({ success, message, alternate_soln }) => {
-      return { success, message, content: alternate_soln };
+    formatData: ({ success, message, soln }) => {
+      return { success, message, content: soln };
     }
   });
 }

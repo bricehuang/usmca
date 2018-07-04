@@ -40,7 +40,6 @@ export default function (state = INITIAL_STATE, { type, payload }) {
     case PROB_UPVOTE:
     case PROB_GET:
       return { ...state, proposal: payload };
-    case PROB_SOLN_COMMENT:
     case PROB_TEST_SOLVE:
       return (requestStatus !== SUCCESS) ? {
         ...state,
@@ -63,6 +62,18 @@ export default function (state = INITIAL_STATE, { type, payload }) {
           requestStatus,
           message,
           content: Object.assign({}, state.proposal.content, { comments: content  })
+        }
+      };
+    case PROB_SOLN_COMMENT:
+      return (requestStatus !== SUCCESS) ? {
+        ...state,
+        proposal: Object.assign({}, state.proposal, { requestStatus, message })
+      } : {
+        ...state,
+        proposal: {
+          requestStatus,
+          message,
+          content: Object.assign({}, state.proposal.content, { soln: content  })
         }
       };
     case PROB_DATABASE:
