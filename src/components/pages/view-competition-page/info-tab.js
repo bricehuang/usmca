@@ -12,10 +12,11 @@ import {
 
 const competitionInfoDisplay = (competition) => {
   const membership = competitionMembership(competition, auth.userId());
+  // <a className="right black-text"><i className="fa fa-pencil" aria-hidden="true" /></a>
   return (
     <div className="round-container">
       <ul>
-        <li><h3>Competition Info<a className="right black-text"><i className="fa fa-pencil" aria-hidden="true" /></a></h3></li>
+        <li><h3>Competition Info</h3></li>
         <li>Name: { competition.name }</li>
         <li>Short name: { competition.short_name }</li>
         <li>Website: { (competition.website) ? <a href={ makeURL(competition.website) } className="teal-text text-darken-3 underline-hover">{ competition.website }</a> : "N/A"}</li>
