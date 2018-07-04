@@ -9,12 +9,12 @@ import * as Pages from "./pages";
 
 const Routes = ({ authenticated }) => (
   <Switch>
-    <Route exact path="/" component={ authenticated ? Pages.CompetitionsPage : Pages.IndexPage } />
-    <Route exact path="/home" component={ authenticated ? Pages.CompetitionsPage : Pages.IndexPage }/>
+    <Route exact path="/" component={ authenticated ? Pages.NotificationsPage : Pages.IndexPage } />
+    <Route exact path="/home" component={ authenticated ? Pages.NotificationsPage : Pages.IndexPage }/>
     <Route exact path="/login" component={ Pages.LoginPage }/>
     <Route exact path="/propose/:competition_id" component={ requireAuth(Pages.Propose) }/>
     <Route exact path="/account" component={ requireAuth(Pages.AccountInfoPage) }/>
-    <Route exact path="/notifications" component={ requireAuth(Pages.NotificationsPage) }/>
+    <Route exact path="/competitions" component={ requireAuth(Pages.CompetitionsPage) }/>
     <Route exact path="/about" component={ Pages.About }/>;
     <Route exact path="/view-competition/:id" component={ Pages.ViewCompetitionPage }/>
     <Route path="/view-contest/:id" component={ requireAuth(Pages.ViewContestPage) }/>
