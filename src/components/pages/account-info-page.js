@@ -8,6 +8,7 @@ import ChangePasswordForm from "../forms/change-password";
 import EditAccountForm from "../forms/edit-account";
 
 class AccountInfoPage extends React.Component {
+  // <RightButtonPanel><Button className="teal darken-3" waves="light">Add Admin</Button><Button className="teal darken-3" waves="light">Step Down</Button></RightButtonPanel>
   render() {
     const { user, admins } = this.props;
     if (!user.content || !admins.content) return <div></div>;
@@ -38,7 +39,6 @@ class AccountInfoPage extends React.Component {
             )
           }
           </ul>
-          <RightButtonPanel><Button className="teal darken-3" waves="light">Add Admin</Button><Button className="teal darken-3" waves="light">Step Down</Button></RightButtonPanel>
         </Col>
       </Row>
     );

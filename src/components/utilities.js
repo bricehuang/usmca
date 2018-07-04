@@ -58,9 +58,9 @@ const RightButtonPanel = ({ children, marginBottom }) => (
 )
 
 const Notification = ({ className, label, author, title, message, onClick }) => {
+  // <a className="right"><i className="fa fa-times" aria-hidden="true"></i></a>
   return (
     <li className={className}>
-      <a className="right"><i className="fa fa-times" aria-hidden="true"></i></a>
       <a onClick={ onClick }><span className="select-circle"></span></a>
       <Modal header={author + ": " + title} trigger={
         <a className="underline-hover">
