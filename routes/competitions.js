@@ -391,14 +391,18 @@ router.get('/database', auth.verifyJWT, (req, res) => {
 /* changing user permissions */
 router.post('/permissions', auth.verifyJWT, (req, res) => {
   const { competition_id, user_id, permission } = req.body;
-  Competition.findById(competition_id, (err, competition) => {
+  Competition.findById(competition_id)
+  .populate('members secure_members czars directors')
+  .exec((err, competition) => {
     if (err) handler(false, 'Failed to load competition.', 503)(req, res);
     else if (!competition) handler(false, 'Competition does not exist.', 400)(req, res);
     else {
       User.findById(user_id, (err, user) => {
         if (err) handler(false, 'Failed to load user.', 503)(req, res);
         else if (!user) handler(false, 'User does not exist.', 400)(req, res);
-        else {
+        else if (competition.directors.map(user => user._id.toString()).indexOf(req.user._id.toString()) === -1) {
+          handler(false, 'Only directors can change a permission.', 401)(req, res);
+        } else {
           switch(permission) {
             case "nonmember":
               competition.members.pull(user._id);
@@ -433,7 +437,15 @@ router.post('/permissions', auth.verifyJWT, (req, res) => {
           }
           competition.save(err => {
             if (err) handler(false, 'Failed to change permission.', 503)(req, res);
-            else handler(true, 'Successfully changed permission.', 200)(req, res);
+            else {
+              console.log('changed permission');
+              handler(true, 'Successfully changed permission.', 200, {roster: {
+                directors: competition.directors,
+                czars: competition.czars,
+                secure_members: competition.secure_members,
+                members: competition.members,
+              }} )(req, res);
+            }
           });
         }
       });

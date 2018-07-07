@@ -29,7 +29,8 @@ module.exports = {
     member: 'Member',
     secure_member: 'Officer',
     czar: 'Czar',
-    director: 'Director'
+    director: 'Director',
+    nonmember: 'Nonmember',
   },
   permissionsDisplay: {
     member: 'Member',

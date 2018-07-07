@@ -24,6 +24,9 @@ const PermissionsModal = ({ defaultValue, competition_id, user_id }) => (
 );
 
 const memberInfoDisplay = (competition) => {
+  // <th className="center-align">Remove</th>
+  // <td className="center-align"><a className="black-text"><i className="fa fa-times" aria-hidden="true" /></a></td>
+
   const membership = competitionMembership(competition, auth.userId());
   const memberView = (user, idx) => {
     const userMembership = competitionMembership(competition, user._id);
@@ -32,7 +35,6 @@ const memberInfoDisplay = (competition) => {
         <td>{ user.name }</td>
         <td>{ user.email }</td>
         <td>{ permissionsDisplay[userMembership] } (<PermissionsModal defaultValue={ userMembership } user_id={ user._id } competition_id={ competition._id } />)</td>
-        <td className="center-align"><a className="black-text"><i className="fa fa-times" aria-hidden="true" /></a></td>
       </tr>
     );
   }
@@ -45,7 +47,6 @@ const memberInfoDisplay = (competition) => {
             <th>Name</th>
             <th>Email</th>
             <th>Membership</th>
-            <th className="center-align">Remove</th>
           </tr>
         </thead>
         <tbody>
