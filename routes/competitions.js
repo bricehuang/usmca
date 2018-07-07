@@ -355,7 +355,9 @@ router.post('/join', auth.verifyJWT, (req, res) => {
 
 router.get('/database', auth.verifyJWT, (req, res) => {
   const { id, subject, difficulty } = req.query;
-  Competition.findById(id, (err, competition) => {
+  Competition.findById(id)
+  .populate({path: 'contests', model: 'Contest', populate: {path: 'tests', model: 'Test'}})
+  .exec((err, competition) => {
     if (err) {
       console.log(err);
       handler(false, 'Failed to load competition.', 503)(req, res);
@@ -381,6 +383,13 @@ router.get('/database', auth.verifyJWT, (req, res) => {
         if (err) {
           handler(false, 'Failed to load database problems.', 503)(req, res);
         } else {
+          let usedProblemIds = []
+          for (const contest of competition.contests) {
+            for (const test of contest.tests) {
+              usedProblemIds = usedProblemIds.concat(test.problems.map(probId => probId.toString()));
+            }
+          }
+          problems = problems.filter(problem => (usedProblemIds.indexOf(problem._id.toString()) === -1));
           handler(true, 'Succesfully loaded database problems.', 200, { competition, problems })(req, res);
         }
       });
