@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Table, Modal } from "react-materialize";
+import { Table, Modal, Button } from "react-materialize";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -7,10 +7,18 @@ import { connect } from "react-redux";
 import auth from "../../../auth";
 import { permissionsDisplay } from "../../../../constants";
 import ChangePermissions from "../../forms/change-permissions";
+import * as Forms from "../../forms";
 
 import {
   DIRECTOR, PENDING_DIRECTOR, CZAR, SECURE, MEMBER, NONMEMBER, competitionMembership, makeURL
 } from "../../utilities";
+
+const AddUserModal = ({ competition_id }) => (
+  <Modal
+    trigger={<Button className="teal darken-3" waves="light">Add new member</Button>}>
+    <Forms.InviteUser competition_id={ competition_id } />
+  </Modal>
+);
 
 const PermissionsModal = ({ defaultValue, competition_id, user_id }) => (
   <Modal
@@ -26,7 +34,6 @@ const PermissionsModal = ({ defaultValue, competition_id, user_id }) => (
 const memberInfoDisplay = (competition) => {
   // <th className="center-align">Remove</th>
   // <td className="center-align"><a className="black-text"><i className="fa fa-times" aria-hidden="true" /></a></td>
-
   const membership = competitionMembership(competition, auth.userId());
   const memberView = (user, idx) => {
     const userMembership = competitionMembership(competition, user._id);
@@ -40,6 +47,7 @@ const memberInfoDisplay = (competition) => {
   }
   return (
     <div className="round-container">
+      <AddUserModal competition_id={ competition._id } />
       <h3>Roster</h3>
       <Table className="roster">
         <thead>

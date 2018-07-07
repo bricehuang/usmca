@@ -22,6 +22,7 @@ class ChangePermissions extends React.Component {
     const { competition_id, user_id, changePermissions } = this.props;
     console.log(competition_id, user_id, permission);
     changePermissions({ competition_id, user_id, permission });
+    window.location.reload();
   }
 
   permissionField  = ({ input, meta, ...rest }) => {
@@ -47,9 +48,11 @@ class ChangePermissions extends React.Component {
       user_id,
       resetForm
     } = this.props;
-    return (content === user_id && requestStatus === SUCCESS) ? (
-      <p>Changed permission! Click <a onClick={ resetForm }>here</a> to change the permission again.</p>
-    ) :(
+    // return
+    // (content === user_id && requestStatus === SUCCESS) ? (
+    //   <p>Changed permission! Click <a onClick={ resetForm }>here</a> to change the permission again.</p>
+    // ) :
+    return (
       <form onSubmit={ handleSubmit(this.onSubmit) }>
         <div>
           <Field name="permission" component={ this.permissionField } />
@@ -57,6 +60,8 @@ class ChangePermissions extends React.Component {
         <RightButtonPanel>
           <Button type="submit" className="teal darken-2">Apply</Button>
         </RightButtonPanel>
+        <br/><br/>
+        Note: a Director cannot step down unless there is at least one other Director.
       </form>
     );
   }

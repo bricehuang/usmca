@@ -402,6 +402,8 @@ router.post('/permissions', auth.verifyJWT, (req, res) => {
         else if (!user) handler(false, 'User does not exist.', 400)(req, res);
         else if (competition.directors.map(user => user._id.toString()).indexOf(req.user._id.toString()) === -1) {
           handler(false, 'Only directors can change a permission.', 401)(req, res);
+        } else if (user_id == req.user._id.toString() && competition.directors.length === 1) {
+          handler(false, 'A director cannot step down if there is no other director.', 401)(req, res);
         } else {
           switch(permission) {
             case "nonmember":
@@ -438,7 +440,6 @@ router.post('/permissions', auth.verifyJWT, (req, res) => {
           competition.save(err => {
             if (err) handler(false, 'Failed to change permission.', 503)(req, res);
             else {
-              console.log('changed permission');
               handler(true, 'Successfully changed permission.', 200, {roster: {
                 directors: competition.directors,
                 czars: competition.czars,

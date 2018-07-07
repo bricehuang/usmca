@@ -50,6 +50,7 @@ class ViewCompetitionPage extends React.Component {
           view: () => <MyProblemsTab />
         },
       };
+      let active = "info";
 
       const membership = competitionMembership(content, auth.userId());
       if (membership === DIRECTOR) {
@@ -60,12 +61,13 @@ class ViewCompetitionPage extends React.Component {
             view: () => <MembersTab />
           },
         });
+        active = "members";
       }
 
-      let active = match.params.tab || "info";
-      if (!(_.find(_.keys(competitionTabs), tab => tab === active))) {
-        active = "info";
-      }
+      // let active = match.params.tab || "info";
+      // if (!(_.find(_.keys(competitionTabs), tab => tab === active))) {
+      //   active = "info";
+      // }
 
       return (
         <Row className="container">
