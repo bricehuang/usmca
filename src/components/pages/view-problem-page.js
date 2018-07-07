@@ -15,6 +15,8 @@ import CommentForm from "../forms/comment";
 import AssignProblem from "../forms/assign-problem";
 import Spinner from "../spinner";
 import Error from "../error";
+import { DIRECTOR, CZAR, competitionMembership } from "../utilities";
+
 const { SUCCESS, PENDING, SUBMITTED, ERROR, IDLE } = requestStatuses;
 
 class Vote extends React.Component {
@@ -163,6 +165,7 @@ class ViewProbPage extends React.Component {
         )
       }
 
+      const membership = competitionMembership(problem.competition, auth.userId(), false);
       return (
         <Row className="container">
           <div style={{marginTop: "36px"}}>
@@ -194,7 +197,7 @@ class ViewProbPage extends React.Component {
                 <li>Difficulty: { problem.difficulty || 'N/A' }</li>
                 <li>{linkToProblemLocation(problemLocation)} </li>
               </ul>
-              {assignOrRemoveProblem}
+              { (membership==DIRECTOR || membership==CZAR) && assignOrRemoveProblem}
             </div>
           </div>
         </Row>
