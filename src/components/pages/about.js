@@ -52,7 +52,7 @@ const About = () => (
           and assign and unassign problems from the database to a contest.
         </CollectionItem>
         <CollectionItem>
-          <span className="bold-text">Officers</span>:
+          <span className="bold-text">Officer</span>:
           In addition to Members’ permissions, Officers can view their competition’s
           database, and have edit access to all problems.
         </CollectionItem>
