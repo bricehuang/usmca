@@ -32,7 +32,14 @@ class CompetitionsPage extends React.Component {
           <li>Website: { (competition.website) ? <a href={ makeURL(competition.website) } className="teal-text text-darken-3 underline-hover">{ competition.website }</a> : "N/A"}</li>
           <div>
             <li><h3>Competition Portal</h3></li>
-            <li><Link to={ `/view-competition/${competition._id}` } className="waves-effect waves-light btn teal darken-3">Enter Competition</Link></li>
+            {
+              (membership === DIRECTOR || membership === CZAR || membership === SECURE || membership === MEMBER) &&
+              <li><Link to={ `/view-competition/${competition._id}` } className="waves-effect waves-light btn teal darken-3">Enter Competition</Link></li>
+            }
+            {
+              (membership === PENDING_DIRECTOR) &&
+              <li>Your competition registration is pending.  You will be able to access your competition once a site admin approves your request.</li>
+            }
           </div>
         </ul>
       </div>
