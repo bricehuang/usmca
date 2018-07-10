@@ -64,7 +64,7 @@ class DatabasePage extends React.Component {
       return (
         <Link to={ `/view-competition/${ competition._id }` }
               className="waves-effect waves-light btn teal darken-3">
-          Return to { competition.name } Home
+          Return to { competition.short_name } Home
         </Link>
       )
     } else {
