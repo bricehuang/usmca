@@ -15,7 +15,7 @@ import CommentForm from "../forms/comment";
 import AssignProblem from "../forms/assign-problem";
 import Spinner from "../spinner";
 import Error from "../error";
-import { DIRECTOR, CZAR, competitionMembership } from "../utilities";
+import { DIRECTOR, CZAR, MEMBER, competitionMembership } from "../utilities";
 
 const { SUCCESS, PENDING, SUBMITTED, ERROR, IDLE } = requestStatuses;
 
@@ -166,10 +166,29 @@ class ViewProbPage extends React.Component {
       }
 
       const membership = competitionMembership(problem.competition, auth.userId(), false);
+      const returnLink = (membership===MEMBER) ? (
+        <div>
+          <Link to={ `/view-competition/${problem.competition._id}` }
+                className="waves-effect waves-light btn teal darken-3">
+            Return to { problem.competition.short_name } Home
+          </Link>
+          <br />
+          <br />
+        </div>
+      ) : (
+        <div>
+          <Link to={ `/view-database/${problem.competition._id}` }
+                className="waves-effect waves-light btn teal darken-3">
+            Return to { problem.competition.short_name } Database
+          </Link>
+          <br />
+          <br />
+        </div>
+      )
       return (
         <Row className="container">
           <div style={{marginTop: "36px"}}>
-            <Link to={ `/view-database/${problem.competition._id}` } className="waves-effect waves-light btn teal darken-3">Return to { problem.competition.short_name } Database</Link><br /><br />
+            {returnLink}
             <div style={{borderTopStyle: "solid", borderTopWidth: "1px"}}>
               <h3>Problem </h3>
               <ExtendedProblemPreview

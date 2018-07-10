@@ -116,7 +116,8 @@ router.param('problem_id', (req, res, next, problem_id) => {
           if (
             problem.competition.directors.indexOf(req.user._id.toString()) === -1 && // competition director
             problem.competition.czars.indexOf(req.user._id.toString()) === -1 && // competition czar
-            problem.competition.secure_members.indexOf(req.user._id.toString()) === -1 // competition secure member
+            problem.competition.secure_members.indexOf(req.user._id.toString()) === -1 && // competition secure member
+            problem.competition.members.indexOf(req.user._id.toString()) === -1 // competition member
            ) {
           Contest.findOne({
             competition: problem.competition._id,
