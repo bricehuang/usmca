@@ -23,7 +23,7 @@ module.exports = {
     let token = req.headers.authorization.substr('Bearer '.length);
     token = token || req.body.token || req.query.token;
     if (token) {
-      jwt.verify(token, process.env.JWT_SECRET /*FAKE_JWT_SECRET*/, (err, decoded) => {
+      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
           handler(false, 'Failed to authenticate token.', 503)(req, res);
         } else {
@@ -57,7 +57,7 @@ module.exports = {
       user_id: user_id,
       admin: admin,
       exp: parseInt(exp.getTime() / 1000),
-    }, process.env.JWT_SECRET /*FAKE_JWT_SECRET*/);
+    }, process.env.JWT_SECRET);
   },
 
   /***************************************************************************
