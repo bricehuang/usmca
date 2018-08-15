@@ -10,7 +10,7 @@
     "ajv": "^6.5.1",
     "async": "^2.6.1",
     "babel-polyfill": "^6.26.0",
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^2.0.0",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.3",
     "clipboard": "^1.7.1",
