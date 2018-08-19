@@ -136,7 +136,9 @@ const compileTestTex = (test, showSolutions) => {
       if (problem.answer){
         ans += "\\noindent {\\bf Answer: } \\fbox{ " +problem.answer+ " }\\ \\\n\n";
       }
-      ans += problem.soln.body+"\n\n";
+      if (problem.soln) {
+        ans += problem.soln.body+"\n\n";
+      }
     }
   }
   ans += (
@@ -144,6 +146,10 @@ const compileTestTex = (test, showSolutions) => {
     "\\end{document}\n"
   );
   return ans
+}
+
+const testTexName = (test) => {
+  return test.contest.name + test.name;
 }
 
 class ViewTestPage extends React.Component {
@@ -171,10 +177,10 @@ class ViewTestPage extends React.Component {
                   <TestProblems test={ test } removeTestProb={ removeTestProb } reorderTestProbs={ reorderTestProbs } />
                 </div>
               </Col>
-              <Download file="test.tex" content={compileTestTex(test, false)}>
+              <Download file={testTexName(test)+".tex"} content={compileTestTex(test, false)}>
                 <button type="button">Download Test TeX</button>
               </Download>
-              <Download file="test.tex" content={compileTestTex(test, true)}>
+              <Download file={testTexName(test)+"SOLNS.tex"} content={compileTestTex(test, true)}>
                 <button type="button">Download Test and Solution TeX</button>
               </Download>
             </Row>

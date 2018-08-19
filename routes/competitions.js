@@ -379,7 +379,10 @@ router.get('/database', auth.verifyJWT, (req, res) => {
         }
       }
       if (difficulty) query.difficulty = { $in: _.map(difficulty, i => parseInt(i)) }
-      Problem.find(query).sort({ updated: -1 }).exec((err, problems) => {
+      Problem.find(query).sort({ updated: -1 })
+      .populate({path: 'author', model: 'User'})
+      .populate({path: 'soln', model: 'Solution'})
+      .exec((err, problems) => {
         if (err) {
           handler(false, 'Failed to load database problems.', 503)(req, res);
         } else {
