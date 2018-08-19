@@ -75,8 +75,23 @@ router.param('test_id', (req, res, next, test_id) => {
   /* @TODO check auths */
   auth.verifyJWT(req, res, () => {
     Test.findById(test_id)
-    .populate('problems')
-    .populate('contest', 'name competition')
+    .populate({
+      path: 'problems',
+      model: 'Problem',
+      populate: {
+        path: 'soln',
+        model: 'Solution',
+      }
+    })
+    .populate({
+      path: 'problems',
+      model: 'Problem',
+      populate: {
+        path: 'author',
+        model: 'User',
+      }
+    })
+    .populate('contest', 'name competition date')
     .exec((err, test) => {
       if (err) handler(false, 'Failed to load test.', 503)(req, res);
       else if (!test) handler(false, 'Test does not exist.', 400)(req, res);

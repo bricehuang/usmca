@@ -3,6 +3,7 @@ import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'r
 import { Row, Col, Modal, Input } from "react-materialize";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import Download from '@axetroy/react-download';
 
 import Error from "../error";
 import Spinner from "../spinner";
@@ -109,6 +110,42 @@ class TestProblems extends React.Component {
   }
 }
 
+const compileTestTex = (test, showSolutions) => {
+  const testdate = new Date(test.contest.date);
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const testDateString = testdate.toLocaleDateString("en-US", options);
+  var ans = (
+    "\\documentclass[10pt,letter]{article}\n" +
+    "\\usepackage{amsfonts, amsmath, amssymb, graphicx}\n" +
+    "\\usepackage[margin=1in]{geometry}\n" +
+    "\\def\\blk#1{\\underline{\\hspace{#1}}}\n" +
+    "\\pagestyle{empty}\n" +
+    "\\begin{document}\n" +
+    "\\footnotesize {Team \\blk{4in} Team ID\\# \\blk{1in}}" +
+    "\\begin{center}\n" +
+    "{\\bf {\\Large "+test.contest.name+": }{\\large "+test.name+"}}\n\n" +
+    "\\vspace{10pt}" +
+    testDateString+"\n" +
+    "\\end{center}\n" +
+    "\\begin{enumerate}\n"
+  );
+  for (const problem of test.problems){
+    ans += "\\item "+problem.statement+"\n\n";
+    if (showSolutions) {
+      ans += "{\\em Proposed by: "+problem.author.name+" }\n\n";
+      if (problem.answer){
+        ans += "\\noindent {\\bf Answer: } \\fbox{ " +problem.answer+ " }\\ \\\n\n";
+      }
+      ans += problem.soln.body+"\n\n";
+    }
+  }
+  ans += (
+    "\\end{enumerate}\n" +
+    "\\end{document}\n"
+  );
+  return ans
+}
+
 class ViewTestPage extends React.Component {
   componentWillMount() {
     const { match, getTest } = this.props;
@@ -134,6 +171,12 @@ class ViewTestPage extends React.Component {
                   <TestProblems test={ test } removeTestProb={ removeTestProb } reorderTestProbs={ reorderTestProbs } />
                 </div>
               </Col>
+              <Download file="test.tex" content={compileTestTex(test, false)}>
+                <button type="button">Download Test TeX</button>
+              </Download>
+              <Download file="test.tex" content={compileTestTex(test, true)}>
+                <button type="button">Download Test and Solution TeX</button>
+              </Download>
             </Row>
           )
         }
