@@ -237,7 +237,16 @@ class ProblemPreview extends React.Component  {
               to={ `/view-problem/${problem._id}` }
               className="black-text underline-hover">
               <div ref={ renderKaTeX }>
-                { problem.statement }
+                {
+                  breakNewlinesWhenNotInMath(problem.statement).map(function(item, key) {
+                    return (
+                      <span key={key}>
+                        {item}
+                        <br/>
+                      </span>
+                    )
+                  })
+                }
               </div>
             </Link>
           </div>
@@ -359,6 +368,7 @@ class ExtendedProblemPreview extends React.Component  {
     // <PublicizeButton user_id={ problem.author._id } problem_id={ problem._id } publicDatabase={ problem.publicDatabase } /><br />
     // <span><div className="prob-btn unvoted"><i className="fa fa-clipboard" aria-hidden="true" /> <a className="underline-hover" ref={ clipboardRef } data-clipboard-text={ problem._id }>Copy ID</a></div></span><br />
             // { problem.alternate_soln.length } Solves &bull;
+
     return (
       <Row className="problem">
         <Col s={12}>
@@ -372,10 +382,17 @@ class ExtendedProblemPreview extends React.Component  {
           </ul>
         </Col>
         <Col s={12}>
-          <div className="katex-preview">
-            <div ref={ renderKaTeX }>
-              { problem.statement }
-            </div>
+          <div className="katex-preview" ref={ renderKaTeX} >
+            {
+              breakNewlinesWhenNotInMath(problem.statement).map(function(item, key) {
+                return (
+                  <span key={key}>
+                    {item}
+                    <br/>
+                  </span>
+                )
+              })
+            }
           </div>
         </Col>
         <Col m={3} s={12} className="problem-stats">
@@ -411,7 +428,16 @@ class Solution extends React.Component  {
         <Col s={12}>
           <div className="katex-preview">
             <div ref={ renderKaTeX }>
-              { solution.body }
+              {
+                breakNewlinesWhenNotInMath(solution.body).map(function(item, key) {
+                  return (
+                    <span key={key}>
+                      {item}
+                      <br/>
+                    </span>
+                  )
+                })
+              }
             </div>
           </div>
         </Col>
@@ -556,6 +582,33 @@ const competitionMembership = (competition, userId, populated = true) => {
   else return NONMEMBER;
 }
 
+const breakNewlinesWhenNotInMath = (tex) => {
+  var ans = []
+  var current = "";
+  var inMath = false;
+  for (const ch of tex) {
+    if (ch == "$"){
+      inMath = !inMath;
+    }
+    if (!inMath && ch == "\n") {
+      ans.push(current);
+      current = "";
+    } else {
+      current += ch;
+    }
+  }
+  ans.push(current);
+  return ans;
+}
+
+const texToHTML = (tex) => {
+  var ans = "";
+  for (const substr of breakNewlinesWhenNotInMath(tex)) {
+    ans += substr + "<br>\n";
+  }
+  return ans;
+}
+
 const SUBJECTS = ['Algebra', 'Combinatorics', 'Geometry', 'Number Theory'];
 
 export {
@@ -578,5 +631,6 @@ export {
   NONMEMBER,
   competitionMembership,
   makeURL,
+  texToHTML,
   SUBJECTS,
 };

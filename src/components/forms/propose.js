@@ -15,7 +15,7 @@ import {
   CompetitionsSelect,
   SubjectsInput
 } from "./utilities";
-import { FlameInput, SUBJECTS } from "../utilities";
+import { FlameInput, texToHTML, SUBJECTS } from "../utilities";
 import ControlledInput from "../react-materialize-custom/ControlledInput";
 
 const { SUCCESS, PENDING, SUBMITTED, IDLE, ERROR } = requestStatuses;
@@ -42,7 +42,7 @@ class ProposeForm extends React.Component {
 
   previewKaTeX = () => {
     if (this.statementField && this.statementField.state.value) {
-      this.statementPreview.innerHTML = this.statementField.state.value;
+      this.statementPreview.innerHTML = texToHTML(this.statementField.state.value);
       this.statementPreview.className = "katex-preview";
       renderKaTeX(this.statementPreview);
     } else {
@@ -50,7 +50,7 @@ class ProposeForm extends React.Component {
       this.statementPreview.className = "";
     }
     if (this.answerField && this.answerField.state.value) {
-      this.answerPreview.innerHTML = this.answerField.state.value;
+      this.answerPreview.innerHTML = texToHTML(this.answerField.state.value);
       this.answerPreview.className = "katex-preview";
       renderKaTeX(this.answerPreview);
     } else {
@@ -58,7 +58,7 @@ class ProposeForm extends React.Component {
       this.answerPreview.className = "";
     }
     if (this.solutionField && this.solutionField.state.value) {
-      this.solutionPreview.innerHTML = this.solutionField.state.value;
+      this.solutionPreview.innerHTML = texToHTML(this.solutionField.state.value);
       this.solutionPreview.className = "katex-preview";
       renderKaTeX(this.solutionPreview);
     } else {

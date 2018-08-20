@@ -31,14 +31,7 @@ class AccountInfoPage extends React.Component {
           </ul>
 
           <h2 className="teal-text text-darken-4">Admins</h2>
-          <p>If you have any problems, these are the contacts of the admins of USMCA:</p>
-          <ul>
-          {
-            admins.content.map((admin, key) =>
-              <li key={key}>{admin.name} ({admin.email})<a className="teal-text text-darken-3 right"><i className="fa fa-times" aria-hidden="true" /></a></li>
-            )
-          }
-          </ul>
+          <p>If you have any problems, please contact the USMCA admins at director@usmath.org.</p>
         </Col>
       </Row>
     );
