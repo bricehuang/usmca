@@ -132,7 +132,10 @@ router.post('/problems', auth.verifyJWT, (req, res) => {
       const official_soln = solution ? Object.assign(new Solution(), {
               author: req.user._id,
               body: solution
-            }) : null;
+            }) : Object.assign(new Solution(), {
+              author: req.user._id,
+              body: ""
+            });
             problem = Object.assign(new Problem(), {
               author: req.user._id,
               competition: competition._id,
