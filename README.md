@@ -46,8 +46,9 @@ Web app for the [United States Math Competition Association](usmath.org).
 This project runs a node server and a MongoDB database and serves a frontend based on React/Redux and Materialize.
 
 ### Set Up
-
+* Install [MongoDB](docs.mongodb.com/manual/installation/).
 * Populate a `.env` in the root directory with the MongoDB url `DB_URL`, the server port `PORT`, and a JWT secret `JWT_SECRET`
-* Install node packages with `npm install`
-* Build the react source with `npm run watch` (`npm run build` for production)
-* Start the server with `npm run dev` (`npm start` for production)
+* Install node packages (including React and Redux) with `npm install`
+* Start the Mongo database with `mongod`.
+* In another terminal, build the React source with `npm run watch` (`npm run build` for production)
+* In another terminal, start the server with `npm run dev` (`npm start` for production)
