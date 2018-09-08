@@ -37,29 +37,35 @@ router.post('/', auth.verifyJWT, (req, res) => {
             handler(false, 'A competition with that name already exists.', 400)(req, res) :
             handler(false, 'A competition with that name is already being requested.', 400)(req, res);
         } else {
-          /* create competition */
-          let newCompetition = new Competition();
-          newCompetition = Object.assign(newCompetition, competition);
-          newCompetition = Object.assign(newCompetition, {
-            directors: [ req.user._id ] // make requester first director
-          });
-          newCompetition.save(err => {
+          User.findById(req.user._id, (err, user) => {
             if (err) {
-              console.log(err);
-              handler(false, 'Database failed to create the competition.', 503)(req, res);
+              handler(false, 'Database failed to load user', 503)(req, res);
             } else {
-              const request = Object.assign(new Request(), {
-                author: req.user._id,
-                body: `${req.user.name} requests to create the competition \"${competition.name}\".`,
-                action_type,
-                type: requestEnum.REQUEST,
-                competition: newCompetition._id
+              /* create competition */
+              let newCompetition = new Competition();
+              newCompetition = Object.assign(newCompetition, competition);
+              newCompetition = Object.assign(newCompetition, {
+                directors: [ req.user._id ] // make requester first director
               });
-              User.find({ admin: true }, (err, admins) => {
-                /* create request */
-                sendRequests(admins, request, req, res, () => {
-                  handler(true, 'Successfully requested creation of competition.', 200)(req, res);
-                });
+              newCompetition.save(err => {
+                if (err) {
+                  console.log(err);
+                  handler(false, 'Database failed to create the competition.', 503)(req, res);
+                } else {
+                  const request = Object.assign(new Request(), {
+                    author: req.user._id,
+                    body: `${req.user.name} (${user.email}) requests to create the competition \"${competition.name}\".`,
+                    action_type,
+                    type: requestEnum.REQUEST,
+                    competition: newCompetition._id
+                  });
+                  User.find({ admin: true }, (err, admins) => {
+                    /* create request */
+                    sendRequests(admins, request, req, res, () => {
+                      handler(true, 'Successfully requested creation of competition.', 200)(req, res);
+                    });
+                  });
+                }
               });
             }
           });
@@ -210,17 +216,23 @@ router.post('/invite', auth.verifyJWT, (req, res) => {
                     competition.directors.indexOf(user._id) > -1) {
                   handler(false, 'User is already a member of the competition.', 400)(req, res);
                 } else {
-                  const invite = Object.assign(new Request(), {
-                    author: req.user._id,
-                    body: `${req.user.name} invites you to join their competition ${competition.name}`,
-                    action_type: action_type,
-                    type: requestEnum.INVITE,
-                    competition: competition._id
-                  });
-                  /* send invite to user */
-                  sendRequests([user], invite, req, res, () => {
-                    handler(true, 'Succesfully requested joining of competition.', 200)(req, res);
-                  });
+                  User.findById(req.user._id, (err, invitingUser) => {
+                    if (err) {
+                      handler(false, 'Failed to load inviting user.', 503)(req, res);
+                    } else {
+                      const invite = Object.assign(new Request(), {
+                        author: req.user._id,
+                        body: `${req.user.name} (${invitingUser.email}) invites you to join their competition ${competition.name}`,
+                        action_type: action_type,
+                        type: requestEnum.INVITE,
+                        competition: competition._id
+                      });
+                      /* send invite to user */
+                      sendRequests([user], invite, req, res, () => {
+                        handler(true, 'Succesfully requested joining of competition.', 200)(req, res);
+                      });
+                    }
+                  })
                 }
               }
             });
@@ -277,17 +289,23 @@ router.post('/join', auth.verifyJWT, (req, res) => {
               competition.directors.indexOf(req.user) > -1) {
             handler(false, 'User is already a member of the competition.', 400)(req, res);
           } else {
-            const request = Object.assign(new Request(), {
-              author: req.user._id,
-              body: `${req.user.name} requests to join your competition ${competition.name}`,
-              action_type: action_type,
-              type: requestEnum.REQUEST,
-              competition: competition._id
-            });
-            /* send request to directors */
-            sendRequests(competition.directors, request, req, res, () => {
-              handler(true, 'Succesfully requested joining of competition.', 200)(req, res);
-            });
+            User.findById(req.user._id, (err, user) => {
+              if (err) {
+                handler(false, 'Database failed to load user.', 503)(reeq, res);
+              } else {
+                const request = Object.assign(new Request(), {
+                  author: req.user._id,
+                  body: `${req.user.name} (${user.email}) requests to join your competition ${competition.name}`,
+                  action_type: action_type,
+                  type: requestEnum.REQUEST,
+                  competition: competition._id
+                });
+                /* send request to directors */
+                sendRequests(competition.directors, request, req, res, () => {
+                  handler(true, 'Succesfully requested joining of competition.', 200)(req, res);
+                });
+              }
+            })
           }
         }
       });
