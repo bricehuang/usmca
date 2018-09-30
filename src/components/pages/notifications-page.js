@@ -6,7 +6,6 @@ import _ from "lodash";
 import {
   VerticalNav,
   Counter,
-  LoadMore,
   Notification,
   Request
 } from "../utilities";
@@ -59,9 +58,8 @@ class NotificationsPage extends React.Component {
               {
                 requests.map((request, key) => <Request request={request} key={key} />)
               }
-              <li className="transparent center-align"><LoadMore /></li>
             </div>
-        }
+          }
         </ul>
       </div>
     );
@@ -120,7 +118,7 @@ class NotificationsPage extends React.Component {
                   return (
                     <Notification
                       className={label}
-                      author={admin_author ? 'Admin' : author ? (author.short_name || 'N/A') : 'N/A' }
+                      author={admin_author ? 'Notification from Administrator' : author ? (author.short_name || 'N/A') : 'N/A' }
                       title={title}
                       message={body}
                       key={key}
@@ -128,7 +126,6 @@ class NotificationsPage extends React.Component {
                   );
                 })
               }
-              <li className="transparent center-align"><LoadMore /></li>
             </div>
           }
         </ul>
