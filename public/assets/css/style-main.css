@@ -345,3 +345,10 @@ li.urgent-announcement {
   font-size: 10px;
   color: #9e9e9e;
 }
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}

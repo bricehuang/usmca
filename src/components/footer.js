@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => (
   <footer className="page-footer teal darken-4">
+   <div class = "footer">
     <div className="footer-copyright teal darken-4 center">
       <div className="container">
         <ul className="grey-text text-lighten-3">
@@ -11,6 +12,7 @@ const Footer = () => (
         </ul>
       </div>
     </div>
+   </div>
   </footer>
 );
 
