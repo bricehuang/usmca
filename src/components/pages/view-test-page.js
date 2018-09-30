@@ -178,10 +178,10 @@ class ViewTestPage extends React.Component {
                 </div>
               </Col>
               <Download file={testTexName(test)+".tex"} content={compileTestTex(test, false)}>
-                <button type="button">Download Test TeX</button>
+                <button type="button" className="waves-effect waves-light btn teal darken-3">Download Test TeX</button>
               </Download>
               <Download file={testTexName(test)+"SOLNS.tex"} content={compileTestTex(test, true)}>
-                <button type="button">Download Test and Solution TeX</button>
+                <button type="button" className="waves-effect waves-light btn teal darken-3">Download Test and Solution TeX</button>
               </Download>
             </Row>
           )
