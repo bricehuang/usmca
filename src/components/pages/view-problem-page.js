@@ -143,7 +143,7 @@ class ViewProbPage extends React.Component {
       let assignOrRemoveProblem;
       if (!problemLocation) {
         assignOrRemoveProblem = (
-          <div>
+          <div style={{borderTopStyle: "solid", borderTopWidth: "1px"}}>
             <h3>Assign Problem</h3>
             <AssignProblem
             tests={getAllTests(problem.competition.contests)}
