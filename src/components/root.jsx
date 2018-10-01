@@ -2,12 +2,12 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
-import App from './app';
+import App from './app.jsx';
 import configureStore from '../configureStore';
 import { initApp } from '../actions';
 import { AUTH_USER, requestStatuses } from '../actions/types';
 
-import auth from '../auth';
+import auth from '../auth.js';
 
 const store = configureStore();
 
