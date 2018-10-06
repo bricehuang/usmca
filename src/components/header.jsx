@@ -8,17 +8,19 @@ import LoginForm from "./forms/login";
 import { logoutUser } from '../actions';
 
 const Header = ({ authenticated, secure, logout }) => (
-  <header>
-    <nav className="teal darken-4">
+  <header className>
+    <nav className="teal darken-4 header-position">
       <Link to="/" className="brand-logo left">USMCA</Link>
       <ul id="nav-mobile" className="right">
-        { authenticated && (<li><Link to="/">Home</Link></li>) }
+        { authenticated && (<li><Link to="/">Notificatons</Link></li>) }
         { authenticated && (<li><Link to="/competitions">Competitions</Link></li>) }
         { authenticated && (<li><Link to="/account">Account</Link></li>) }
         { authenticated && (<li><Link to="/" onClick={ logoutUser }>Log Out</Link></li>) }
         { !authenticated && (<li><Link to="/login">Log In</Link></li>) }
       </ul>
     </nav>
+    <div className= "whitespace-header">
+    </div>
   </header>
 );
 

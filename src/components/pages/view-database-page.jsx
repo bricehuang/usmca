@@ -179,7 +179,7 @@ class DatabasePage extends React.Component {
         {
           (database.content && database.content.problems && database.content.competition) &&
           <Download file={"backup.tex"} content={backupTex(database.content.problems, database.content.competition)}>
-            <button type="button">Download Problem Database Backup as TeX</button>
+            <button type="button" className="waves-effect waves-light btn teal darken-3">Download Problem Database Backup as TeX</button>
           </Download>
         }
       </Row>
