@@ -86,6 +86,7 @@ export const PROB_FETCH_MINE = 'prob_fetch_mine', // fetch proposals written by 
              PROB_PUT = 'prob_put', // modify a proposal
              PROB_GET = 'prob_get', // get a proposal by id
              PROB_UPVOTE = 'prob_upvote', // upvote a problem
+             PROB_SOLN_UPVOTE = 'prob_soln_upvote'//upvote a solution
              PROB_COMMENT = 'prob_comment', // comment on a problem
              PROB_DATABASE = 'prob_database', // fetch database of a competition
              PROB_PUBLIC_DATABASE = 'prob_public_database', // fetch public database

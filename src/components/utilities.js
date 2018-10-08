@@ -415,7 +415,7 @@ class ExtendedProblemPreview extends React.Component  {
 
 class Solution extends React.Component  {
   render() {
-    const { solution } = this.props;
+    const { solution, onUpvote, upvoted} = this.props;
           // <ul className="problem-options">
             // <li><a className="grey-text"><i className="fa fa-pencil" aria-hidden="true"></i></a></li>
             // <li><a className="grey-text"><i className="fa fa-trash" aria-hidden="true"></i></a></li>
@@ -442,7 +442,7 @@ class Solution extends React.Component  {
           </div>
         </Col>
         <Col m={3} s={12} className="problem-stats">
-          <span style={{marginRight: "6px"}}><div className="prob-btn upvote unvoted"><i className="fa fa-thumbs-up" aria-hidden="true"></i><a className="underline-hover">Upvote</a></div></span>
+          <span style={{marginRight: "6px"}}><div className={"prob-btn " + (upvoted ? "upvoted" : "unvoted")} onClick={ onUpvote }><i className="fa fa-thumbs-up" aria-hidden="true" /><a className="underline-hover">Upvote{ upvoted && "d"}</a></div></span>
           <span>
             <div className="prob-btn upvote unvoted">
               <i className="fa fa-clipboard" aria-hidden="true" /> <a className="underline-hover" ref={ clipboardRef } data-clipboard-text={ solution.body }>Copy TeX</a>

@@ -8,6 +8,7 @@ import {
   PROB_PUT,
   PROB_GET,
   PROB_UPVOTE,
+  PROB_SOLN_UPVOTE,
   PROB_COMMENT,
   PROB_DATABASE,
   PROB_PUBLIC_DATABASE,
@@ -131,6 +132,32 @@ export function putProposal(id, proposal) {
 
 export function upvoteProblem(id) {
   let action = { type: PROB_UPVOTE };
+  return dispatch => {
+    authenticate(action, dispatch, userId => {
+      fetch('api/problems/upvotes', {
+        method: 'post',
+        body: JSON.stringify({ id }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      }).then(
+        res => res.json().then(({ success, message, problem }) => {
+          if (!success) {
+            dispatch(Object.assign(action, errorPayload(message)));
+          } else {
+            dispatch(Object.assign(action, successPayload({
+              content: problem
+            })));
+          }
+        }),
+        serverError(action, dispatch)
+      );
+    });
+  }
+}
+export function upvoteSolution(id) {
+  let action = { type: PROB_SOLN_UPVOTE };
   return dispatch => {
     authenticate(action, dispatch, userId => {
       fetch('api/problems/upvotes', {
