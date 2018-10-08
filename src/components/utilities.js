@@ -397,7 +397,6 @@ class ExtendedProblemPreview extends React.Component  {
         </Col>
         <Col m={3} s={12} className="problem-stats">
           <span style={{marginRight: "6px"}}><div className={"prob-btn " + (upvoted ? "upvoted" : "unvoted")} onClick={ onUpvote }><i className="fa fa-thumbs-up" aria-hidden="true" /><a className="underline-hover">Upvote{ upvoted && "d"}</a></div></span>
-          console.log(problem.upvotes);
           <span>
             <div className="prob-btn upvote unvoted">
               <i className="fa fa-clipboard" aria-hidden="true" /> <a className="underline-hover" ref={ clipboardRef } data-clipboard-text={ problem.statement }>Copy TeX</a>
@@ -444,7 +443,6 @@ class Solution extends React.Component  {
         </Col>
         <Col m={3} s={12} className="problem-stats">
           <span style={{marginRight: "6px"}}><div className={"prob-btn " + (upvoted ? "upvoted" : "unvoted")} onClick={ onUpvote }><i className="fa fa-thumbs-up" aria-hidden="true" /><a className="underline-hover">Upvote{ upvoted && "d"}</a></div></span>
-          console.log(solution.upvotes);
           <span>
             <div className="prob-btn upvote unvoted">
               <i className="fa fa-clipboard" aria-hidden="true" /> <a className="underline-hover" ref={ clipboardRef } data-clipboard-text={ solution.body }>Copy TeX</a>
