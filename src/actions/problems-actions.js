@@ -168,7 +168,7 @@ export function upvoteSolution(id) {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       }).then(
-        res => res.json().then(({ success, message, problem }) => {
+        res => res.json().then(({ success, message, solution }) => {
           if (!success) {
             dispatch(Object.assign(action, errorPayload(message)));
           } else {
