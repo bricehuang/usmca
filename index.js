@@ -40,11 +40,13 @@ const authRouter = require('./routes/auth'),
       contestRouter = require('./routes/contests'),
       compRouter = require('./routes/competitions'),
       probRouter = require('./routes/problems');
+      solnRouter = require('./routes/solutions');
 app.use('/', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/contests', contestRouter);
 app.use('/api/competitions', compRouter);
 app.use('/api/problems', probRouter);
+app.use('/api/solutions', solnRouter);
 
 /* serve home page */
 app.get('/*', (req, res) => {

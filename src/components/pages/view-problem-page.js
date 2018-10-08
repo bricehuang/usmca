@@ -206,7 +206,7 @@ class ViewProbPage extends React.Component {
                 problem.soln ? (
                   <Solution solution
                   solution={ problem.soln }
-                  upvoted={ true }
+                  upvoted={ problem.soln.upvotes.indexOf(auth.userId()) > -1 }
                   onUpvote={ () => { upvoteSolution(problem._id); } }/>
                 ): ( <p>No solution.</p> )
               }
