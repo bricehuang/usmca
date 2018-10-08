@@ -173,7 +173,7 @@ export function upvoteSolution(id) {
             dispatch(Object.assign(action, errorPayload(message)));
           } else {
             dispatch(Object.assign(action, successPayload({
-              content: problem
+              content: solution
             })));
           }
         }),
