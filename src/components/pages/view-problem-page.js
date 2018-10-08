@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 import auth from "../../auth";
 import renderKaTeX from "../../katex";
-import { getProposal, upvoteProblem, removeTestProb } from "../../actions";
+import { getProposal, upvoteProblem, upvoteSolution, removeTestProb } from "../../actions";
 import { requestStatuses } from "../../actions/types";
 import { ProblemPreview, ExtendedProblemPreview, Solution, HorizontalNav, Counter } from "../utilities";
 import TestSolveForm from "../forms/test-solve";
