@@ -5,6 +5,7 @@ import {
   PROB_PUT,
   PROB_GET,
   PROB_UPVOTE,
+  PROB_SOLN_UPVOTE,
   PROB_DATABASE,
   PROB_PUBLIC_DATABASE,
   PROB_TAKE,
@@ -38,6 +39,7 @@ export default function (state = INITIAL_STATE, { type, payload }) {
         { ...state, putProposal: payload } :
         { ...state, putProposal: payload, proposal: payload };
     case PROB_UPVOTE:
+    case PROB_SOLN_UPVOTE:
     case PROB_GET:
       return { ...state, proposal: payload };
     case PROB_TEST_SOLVE:
