@@ -160,7 +160,7 @@ export function upvoteSolution(id) {
   let action = { type: PROB_SOLN_UPVOTE };
   return dispatch => {
     authenticate(action, dispatch, userId => {
-      fetch('api/problems/upvotes', {
+      fetch('api/solution/upvotes', {
         method: 'post',
         body: JSON.stringify({ id }),
         headers: {
