@@ -85,7 +85,7 @@ class ProposeForm extends React.Component {
   difficultyField = ({ input, meta, ...rest }) => (
     <div>
       <p style={{color: "#9e9e9e", fontSize: ".8rem"}}>Difficulty</p>
-      <FlameInput value={0} id={this.props.competition_id} { ...input } { ...rest } />
+      <FlameInput value={0} comp_id={this.props.competition_id} { ...input } { ...rest } />
     </div>
   )
 
