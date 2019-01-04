@@ -2,6 +2,9 @@
   "name": "problem-proposals",
   "version": "1.0.0",
   "description": "Problem proposals page for the United States Mathematics Competition Association.",
+  "engines": {
+    "node": "10.6.0"
+  },
   "dependencies": {
     "@axetroy/react-download": "^1.1.1",
     "@types/react": "^16.0.5",
