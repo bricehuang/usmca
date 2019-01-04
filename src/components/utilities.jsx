@@ -277,7 +277,7 @@ class FlameInput extends React.Component  {
     this.state = {
       labels: (
         // TODO THIS IS SUPER HACKY
-        this.props.comp_id == "5c2fcac1b6d7cd0013293720" ?
+        this.props.comp_id != "5c2fcac1b6d7cd0013293720" ?
         ["early-mid AMC", "mid-late AMC", "late AMC-early AIME", "mid AIME", "late AIME-early Olympiad", "Olympiad"] :
         ["pre-IMO","IMO 1","IMO 1-2","IMO 2","IMO 2-3","IMO 3"]
       ),
