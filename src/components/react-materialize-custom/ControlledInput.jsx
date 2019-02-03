@@ -201,6 +201,11 @@ class Input extends React.Component {
         ? this.state.value
         : defaultValue;
 
+      let height = "75px";
+      if (label == "Solution (optional)") {
+        height = "300px";
+      }
+
       return (
         <div className={cx(classes)}>
           { this.renderIcon() }
@@ -212,6 +217,7 @@ class Input extends React.Component {
             onChange={this._onChange}
             placeholder={placeholder}
             type={inputType}
+            style={{height: height}}
           />
           {htmlLabel}
         </div>
