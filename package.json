@@ -62,7 +62,8 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "build": "webpack -p",
-    "watch": "webpack -d --watch"
+    "watch": "webpack -d --watch",
+    "heroku-postbuild": "echo Skip build on Heroku"
   },
   "repository": {
     "type": "git",
@@ -74,5 +75,6 @@
     "url": "https://github.com/USMCA/website/issues"
   },
   "homepage": "https://github.com/USMCA/website#readme",
-  "main": "index.js"
+  "main": "index.js",
+  "heroku-run-build-script": true
 }
