@@ -24,7 +24,7 @@
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "mongodb": "^3.0.10",
-    "mongoose": "^5.1.5",
+    "mongoose": "^5.7.5",
     "nodemon": "^1.18.4",
     "react-materialize": "^1.0.10",
     "react-sortable-hoc": "^0.6.8",
