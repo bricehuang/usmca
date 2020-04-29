@@ -43,7 +43,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "immutable": "^3.8.2",
     "isomorphic-fetch": "^2.2.1",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "morgan": "^1.9.0",
     "normalizr": "^3.2.4",
     "prop-types": "^15.6.1",
