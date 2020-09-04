@@ -23,7 +23,7 @@
     "jsonwebtoken": "^7.4.3",
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
-    "mongodb": "^3.0.10",
+    "mongodb": "^3.1.13",
     "mongoose": "^5.1.5",
     "nodemon": "^1.18.4",
     "react-materialize": "^1.0.10",
