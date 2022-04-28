@@ -12,7 +12,7 @@
     "@types/react-redux": "^5.0.13",
     "@types/react-router-dom": "^4.2.2",
     "ajv": "^6.5.1",
-    "async": "^2.6.1",
+    "async": "^2.6.4",
     "babel-polyfill": "^6.26.0",
     "bcrypt": "^2.0.0",
     "bluebird": "^3.5.1",
